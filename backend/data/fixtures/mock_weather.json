@@ -1,0 +1,50 @@
+{
+  "version": "v0.1",
+  "weather_snapshots": [
+    {
+      "weather_id": "weather_20260520_001",
+      "area": "下沙",
+      "time_range": {
+        "start_time": "2026-05-20T13:00:00+08:00",
+        "end_time": "2026-05-20T18:00:00+08:00"
+      },
+      "weather": "cloudy",
+      "temperature": 25,
+      "rain_probability": 0.25,
+      "outdoor_risk_level": "low",
+      "suggested_recovery": null,
+      "source": "mock_api",
+      "updated_at": "2026-05-20T13:00:00+08:00"
+    },
+    {
+      "weather_id": "weather_20260520_002",
+      "area": "金沙湖",
+      "time_range": {
+        "start_time": "2026-05-20T13:00:00+08:00",
+        "end_time": "2026-05-20T18:00:00+08:00"
+      },
+      "weather": "cloudy",
+      "temperature": 26,
+      "rain_probability": 0.45,
+      "outdoor_risk_level": "medium",
+      "suggested_recovery": "indoor_activity",
+      "source": "mock_api",
+      "updated_at": "2026-05-20T13:00:00+08:00"
+    },
+    {
+      "weather_id": "weather_20260520_003",
+      "area": "高教园区",
+      "time_range": {
+        "start_time": "2026-05-20T13:00:00+08:00",
+        "end_time": "2026-05-20T18:00:00+08:00"
+      },
+      "weather": "rain",
+      "temperature": 27,
+      "rain_probability": 0.65,
+      "outdoor_risk_level": "medium",
+      "suggested_recovery": "indoor_activity",
+      "source": "mock_api",
+      "updated_at": "2026-05-20T13:00:00+08:00"
+    }
+  ]
+}

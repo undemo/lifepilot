@@ -1,0 +1,306 @@
+{
+  "version": "poi_activity_attributes.v1",
+  "items": {
+    "poi_gaode_activity_080_40717d": {
+      "semantic_tags": ["sports", "badminton", "indoor", "group_ok"],
+      "activity_features": {
+        "raw_activity_terms": ["羽毛球"],
+        "activity_type_ids": ["ACTIVITY_BADMINTON"],
+        "parent_categories": ["SPORTS"],
+        "facility_types": ["羽毛球馆", "体育中心"],
+        "genres": ["球类"],
+        "styles": ["运动", "室内"],
+        "scenes": ["朋友", "同事", "亲友"],
+        "intensity": "medium",
+        "physical_intensity": 0.55,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.55,
+        "elderly_activity_score": 0.35,
+        "noise_level": 0.45,
+        "quiet_score": 0.35
+      },
+      "addon_features": ["补水", "毛巾", "预约场地"]
+    },
+    "poi_gaode_activity_015_14076e": {
+      "semantic_tags": ["esports", "game", "indoor", "group_ok", "strong_social", "low_fit_activity"],
+      "activity_features": {
+        "raw_activity_terms": ["电竞", "网咖"],
+        "activity_type_ids": ["ACTIVITY_ESPORTS"],
+        "parent_categories": ["GAME", "SOCIAL_ENTERTAINMENT"],
+        "facility_types": ["电竞馆", "网咖"],
+        "genres": ["电子游戏"],
+        "styles": ["强社交", "室内"],
+        "scenes": ["朋友", "室友"],
+        "intensity": "low",
+        "physical_intensity": 0.2,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.05,
+        "elderly_activity_score": 0.1,
+        "noise_level": 0.82,
+        "quiet_score": 0.08
+      }
+    },
+    "poi_gaode_activity_028_de4485": {
+      "semantic_tags": ["esports", "game", "indoor", "group_ok", "strong_social", "low_fit_activity"],
+      "activity_features": {
+        "raw_activity_terms": ["电竞", "网咖"],
+        "activity_type_ids": ["ACTIVITY_ESPORTS"],
+        "parent_categories": ["GAME", "SOCIAL_ENTERTAINMENT"],
+        "facility_types": ["电竞馆", "网咖"],
+        "genres": ["电子游戏"],
+        "styles": ["强社交", "室内"],
+        "scenes": ["朋友", "室友"],
+        "intensity": "low",
+        "physical_intensity": 0.2,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.05,
+        "elderly_activity_score": 0.1,
+        "noise_level": 0.82,
+        "quiet_score": 0.08
+      }
+    },
+    "poi_gaode_activity_086_6b2764": {
+      "semantic_tags": ["esports", "game", "indoor", "group_ok", "strong_social", "low_fit_activity"],
+      "activity_features": {
+        "raw_activity_terms": ["电竞", "网咖"],
+        "activity_type_ids": ["ACTIVITY_ESPORTS"],
+        "parent_categories": ["GAME", "SOCIAL_ENTERTAINMENT"],
+        "facility_types": ["电竞馆", "网咖"],
+        "genres": ["电子游戏"],
+        "styles": ["强社交", "室内"],
+        "scenes": ["朋友", "室友"],
+        "intensity": "low",
+        "physical_intensity": 0.2,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.05,
+        "elderly_activity_score": 0.1,
+        "noise_level": 0.82,
+        "quiet_score": 0.08
+      }
+    },
+    "poi_gaode_activity_046_e86c4a": {
+      "semantic_tags": ["script_murder", "board_game", "indoor", "group_ok", "strong_social", "low_fit_activity"],
+      "activity_features": {
+        "raw_activity_terms": ["剧本杀", "推理"],
+        "activity_type_ids": ["ACTIVITY_SCRIPT_MURDER"],
+        "parent_categories": ["GAME", "SOCIAL_ENTERTAINMENT"],
+        "facility_types": ["剧本杀"],
+        "genres": ["推理"],
+        "styles": ["沉浸", "室内"],
+        "scenes": ["朋友"],
+        "intensity": "low",
+        "physical_intensity": 0.18,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.08,
+        "elderly_activity_score": 0.12,
+        "noise_level": 0.72,
+        "quiet_score": 0.18
+      }
+    },
+    "poi_gaode_activity_047_4acf69": {
+      "semantic_tags": ["hands_on", "craft", "indoor", "child_friendly", "kid_safe", "family_time", "date_friendly"],
+      "activity_features": {
+        "raw_activity_terms": ["DIY手工", "手作"],
+        "activity_type_ids": ["ACTIVITY_HANDS_ON"],
+        "parent_categories": ["HANDS_ON", "FAMILY", "QUIET_STAY"],
+        "facility_types": ["手工坊"],
+        "genres": ["手作"],
+        "styles": ["低强度", "室内", "可聊天"],
+        "scenes": ["亲子", "朋友", "约会"],
+        "intensity": "low",
+        "physical_intensity": 0.18,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.9,
+        "elderly_activity_score": 0.72,
+        "noise_level": 0.32,
+        "quiet_score": 0.72
+      },
+      "addon_features": ["洗手台", "预约时段"]
+    },
+    "poi_gaode_activity_011_f9f2d9": {
+      "semantic_tags": ["amusement", "child_friendly", "kid_safe", "family_time", "indoor"],
+      "activity_features": {
+        "raw_activity_terms": ["亲子游乐园", "儿童乐园"],
+        "activity_type_ids": ["ACTIVITY_AMUSEMENT"],
+        "parent_categories": ["AMUSEMENT", "FAMILY"],
+        "facility_types": ["儿童乐园", "游乐园"],
+        "genres": ["亲子游乐"],
+        "styles": ["亲子", "室内"],
+        "scenes": ["亲子"],
+        "intensity": "low",
+        "physical_intensity": 0.28,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.95,
+        "elderly_activity_score": 0.45,
+        "noise_level": 0.58,
+        "quiet_score": 0.25
+      },
+      "addon_features": ["厕所", "休息区", "湿巾"]
+    },
+    "poi_gaode_activity_023_b1bcac": {
+      "semantic_tags": ["sports", "indoor", "group_ok"],
+      "activity_features": {
+        "raw_activity_terms": ["篮球"],
+        "activity_type_ids": ["ACTIVITY_BASKETBALL"],
+        "parent_categories": ["SPORTS"],
+        "facility_types": ["篮球馆"],
+        "genres": ["球类"],
+        "styles": ["对抗运动", "室内"],
+        "scenes": ["朋友"],
+        "intensity": "high",
+        "physical_intensity": 0.85,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.35,
+        "elderly_activity_score": 0.05,
+        "noise_level": 0.6,
+        "quiet_score": 0.15
+      }
+    },
+    "poi_gaode_activity_073_44588d": {
+      "semantic_tags": ["sports", "park", "group_ok"],
+      "activity_features": {
+        "raw_activity_terms": ["足球"],
+        "activity_type_ids": ["ACTIVITY_FOOTBALL"],
+        "parent_categories": ["SPORTS"],
+        "facility_types": ["足球场"],
+        "genres": ["球类"],
+        "styles": ["对抗运动", "户外"],
+        "scenes": ["朋友"],
+        "intensity": "high",
+        "physical_intensity": 0.9,
+        "indoor": false,
+        "booking_required": true,
+        "child_activity_score": 0.25,
+        "elderly_activity_score": 0.03,
+        "noise_level": 0.65,
+        "quiet_score": 0.12
+      }
+    },
+    "poi_gaode_activity_168_3e6e34": {
+      "semantic_tags": ["sports", "lake", "group_ok"],
+      "activity_features": {
+        "raw_activity_terms": ["网球"],
+        "activity_type_ids": ["ACTIVITY_TENNIS"],
+        "parent_categories": ["SPORTS"],
+        "facility_types": ["网球中心"],
+        "genres": ["球类"],
+        "styles": ["运动"],
+        "scenes": ["朋友"],
+        "intensity": "medium",
+        "physical_intensity": 0.65,
+        "indoor": false,
+        "booking_required": true,
+        "child_activity_score": 0.45,
+        "elderly_activity_score": 0.2,
+        "noise_level": 0.45,
+        "quiet_score": 0.25
+      }
+    },
+    "poi_gaode_activity_001_5437af": {
+      "semantic_tags": ["theater", "performance", "indoor", "date_friendly", "visitor_friendly", "lake"],
+      "activity_features": {
+        "raw_activity_terms": ["剧院", "音乐剧", "演出"],
+        "activity_type_ids": ["ACTIVITY_THEATER"],
+        "parent_categories": ["PERFORMANCE", "QUIET_STAY"],
+        "facility_types": ["剧院"],
+        "genres": ["演出", "音乐剧"],
+        "styles": ["观演", "仪式感", "室内"],
+        "scenes": ["约会", "亲友", "朋友"],
+        "intensity": "low",
+        "physical_intensity": 0.12,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.45,
+        "elderly_activity_score": 0.78,
+        "noise_level": 0.28,
+        "quiet_score": 0.68
+      }
+    },
+    "poi_gaode_activity_036_cfdcec": {
+      "semantic_tags": ["movie", "theater", "indoor", "date_friendly", "group_ok", "mall"],
+      "activity_features": {
+        "raw_activity_terms": ["电影", "影院"],
+        "activity_type_ids": ["ACTIVITY_MOVIE"],
+        "parent_categories": ["MOVIE_THEATER"],
+        "facility_types": ["电影院"],
+        "genres": ["电影"],
+        "styles": ["观影", "室内"],
+        "scenes": ["朋友", "约会", "亲子"],
+        "intensity": "low",
+        "physical_intensity": 0.12,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.6,
+        "elderly_activity_score": 0.62,
+        "noise_level": 0.35,
+        "quiet_score": 0.52
+      }
+    },
+    "poi_mock_walk_jinshahu_lakeside_loop": {
+      "activity_features": {
+        "raw_activity_terms": ["景点", "散步", "逛逛"],
+        "activity_type_ids": ["ACTIVITY_SCENIC", "ACTIVITY_PARK_WALK"],
+        "parent_categories": ["SCENIC", "WALK", "QUIET_STAY"],
+        "facility_types": ["公园", "湖边", "步道"],
+        "genres": ["城市景观", "散步"],
+        "styles": ["低强度", "安静", "户外"],
+        "scenes": ["亲友", "朋友", "散心", "亲子"],
+        "intensity": "low",
+        "physical_intensity": 0.18,
+        "indoor": false,
+        "booking_required": false,
+        "child_activity_score": 0.82,
+        "elderly_activity_score": 0.82,
+        "noise_level": 0.18,
+        "quiet_score": 0.9
+      }
+    },
+    "poi_mock_walk_jinshahu_sunset_deck": {
+      "activity_features": {
+        "raw_activity_terms": ["景点", "美景", "观景台"],
+        "activity_type_ids": ["ACTIVITY_SCENIC", "ACTIVITY_PARK_WALK"],
+        "parent_categories": ["SCENIC", "WALK"],
+        "facility_types": ["观景台", "湖边"],
+        "genres": ["城市景观", "拍照"],
+        "styles": ["低强度", "拍照"],
+        "scenes": ["亲友", "约会", "朋友"],
+        "intensity": "low",
+        "physical_intensity": 0.16,
+        "indoor": false,
+        "booking_required": false,
+        "child_activity_score": 0.72,
+        "elderly_activity_score": 0.72,
+        "noise_level": 0.2,
+        "quiet_score": 0.82
+      }
+    },
+    "poi_mock_activity_jinshahu_photo_booth": {
+      "semantic_tags": ["photo_spot", "indoor", "quiet_stay", "date_friendly"],
+      "activity_features": {
+        "raw_activity_terms": ["写真", "影棚", "拍照"],
+        "activity_type_ids": ["ACTIVITY_EXHIBITION"],
+        "parent_categories": ["QUIET_STAY"],
+        "facility_types": ["影棚"],
+        "genres": ["拍照"],
+        "styles": ["室内", "低强度"],
+        "scenes": ["约会", "朋友"],
+        "intensity": "low",
+        "physical_intensity": 0.12,
+        "indoor": true,
+        "booking_required": true,
+        "child_activity_score": 0.25,
+        "elderly_activity_score": 0.45,
+        "noise_level": 0.22,
+        "quiet_score": 0.75
+      }
+    }
+  }
+}

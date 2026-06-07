@@ -1,0 +1,9 @@
+base_url: http://10.31.112.238:58080
+api_key: EMPTY
+model: Qwen3.5-35B-A3B-Uncensored-HauhauCS-Aggressive-Q8_0.gguf
+temperature: 0.35
+max_tokens: 4096
+timeout: 60
+retry: 2
+backoff: 1.5
+enable_thinking: false

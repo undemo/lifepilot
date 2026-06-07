@@ -1,0 +1,7685 @@
+{
+  "version": "2026-05-24",
+  "schema_version": "rule_eval.v1",
+  "purpose": "LifePilot internal rule recall and slot-alignment evaluation dataset. Mock-only; not a public API contract.",
+  "case_count": 200,
+  "groups": {
+    "city_light_explore": 25,
+    "date_dining_anchor": 50,
+    "edge_constraints": 20,
+    "family_parent_child": 45,
+    "friend_group": 30,
+    "solo_mood_relief": 30
+  },
+  "evaluation_contract": {
+    "request_body": "POST /api/v1/plans/create body fragment.",
+    "expected.scenario": "Expected user_goal.scenario.",
+    "expected.must_have_tags": "Tags that should be present in user_goal.intent_tags or constraints.must_have.",
+    "expected.activity_should_match_any": "At least one should appear in activity step display_tags/title/semantic evaluation.",
+    "expected.restaurant_should_match_any": "At least one should appear in restaurant step display_tags/title/semantic evaluation.",
+    "expected.should_exclude_terms": "Terms that should not appear in selected POI titles or user-visible notes."
+  },
+  "cases": [
+    {
+      "case_id": "rule_eval_001",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿自助餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "buffet",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_002",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿自助烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "buffet",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_003",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿清淡晚饭，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_004",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿减脂轻食，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "light_meal",
+          "light_food",
+          "healthy_light",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food",
+          "healthy_light"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_005",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿椰子鸡，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_006",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿火锅，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "hotpot",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_007",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_008",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿日料，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "cuisine_japanese",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_009",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去游乐园玩一会儿，然后吃一顿西餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "western_cuisine",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "游乐园要落到亲子游乐/嘉年华，不应退化为电竞或普通商场。"
+    },
+    {
+      "case_id": "rule_eval_010",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿自助餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "buffet",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_011",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿自助烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "buffet",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_012",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿清淡晚饭，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_013",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿减脂轻食，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "light_meal",
+          "light_food",
+          "healthy_light",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food",
+          "healthy_light"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_014",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿椰子鸡，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_015",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿火锅，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "hotpot",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_016",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_017",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿日料，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "cuisine_japanese",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_018",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子去嘉年华或者儿童乐园，然后吃一顿西餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "western_cuisine",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "嘉年华/儿童乐园是显式活动锚点。"
+    },
+    {
+      "case_id": "rule_eval_019",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿自助餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "buffet",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_020",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿自助烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "buffet",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_021",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿清淡晚饭，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_022",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿减脂轻食，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "light_meal",
+          "light_food",
+          "healthy_light",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food",
+          "healthy_light"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_023",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿椰子鸡，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_024",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿火锅，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "hotpot",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_025",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_026",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿日料，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "cuisine_japanese",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_027",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子做一次手工DIY，然后吃一顿西餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "hands_on",
+          "craft",
+          "western_cuisine",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "hands_on",
+          "craft"
+        ],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "手作需求应命中手工、DIY、陶艺等。"
+    },
+    {
+      "case_id": "rule_eval_028",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿自助餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "buffet",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_029",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿自助烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "buffet",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_030",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿清淡晚饭，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_031",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿减脂轻食，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "light_meal",
+          "light_food",
+          "healthy_light",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food",
+          "healthy_light"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_032",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿椰子鸡，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_033",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿火锅，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "hotpot",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_034",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_035",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿日料，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "cuisine_japanese",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_036",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子找室内亲子活动，然后吃一顿西餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "western_cuisine",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe"
+        ],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "室内亲子活动不能出现棋牌、酒吧、KTV。"
+    },
+    {
+      "case_id": "rule_eval_037",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿自助餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "buffet",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_038",
+      "group": "family_parent_child",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿自助烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "buffet",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_039",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿清淡晚饭，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_040",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿减脂轻食，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "light_meal",
+          "light_food",
+          "healthy_light",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food",
+          "healthy_light"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_041",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿椰子鸡，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_042",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿火锅，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "hotpot",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_043",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿烤肉，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "bbq",
+          "grill",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_044",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿日料，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "cuisine_japanese",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_045",
+      "group": "family_parent_child",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和老婆孩子孩子5岁，不排长队，然后吃一顿西餐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue",
+          "western_cuisine",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "child_friendly",
+          "kid_safe",
+          "low_queue"
+        ],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "电竞",
+          "棋牌",
+          "酒吧",
+          "KTV"
+        ]
+      },
+      "evaluation_notes": "低排队和儿童安全优先。"
+    },
+    {
+      "case_id": "rule_eval_046",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃火锅。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "hotpot",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_047",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃火锅。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "hotpot",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_048",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃火锅。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "hotpot",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_049",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃火锅。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "hotpot",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_050",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃火锅。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "hotpot",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "hotpot"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_051",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃日料。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "cuisine_japanese",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_052",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃日料。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "cuisine_japanese",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_053",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃日料。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "cuisine_japanese",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_054",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃日料。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "cuisine_japanese",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_055",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃日料。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "cuisine_japanese",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_056",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃寿司。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "cuisine_japanese",
+          "sushi",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "sushi"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_057",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃寿司。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "cuisine_japanese",
+          "sushi",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "sushi"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_058",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃寿司。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "cuisine_japanese",
+          "sushi",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "sushi"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_059",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃寿司。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "cuisine_japanese",
+          "sushi",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "sushi"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_060",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃寿司。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "cuisine_japanese",
+          "sushi",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "sushi"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_061",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃居酒屋。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "cuisine_japanese",
+          "izakaya",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "izakaya"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_062",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃居酒屋。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "cuisine_japanese",
+          "izakaya",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "izakaya"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_063",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃居酒屋。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "cuisine_japanese",
+          "izakaya",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "izakaya"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_064",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃居酒屋。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "cuisine_japanese",
+          "izakaya",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "izakaya"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_065",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃居酒屋。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "cuisine_japanese",
+          "izakaya",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "izakaya"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_066",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃烤肉。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_067",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃烤肉。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_068",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃烤肉。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_069",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃烤肉。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_070",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃烤肉。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_071",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃自助餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "buffet",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_072",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃自助餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "buffet",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_073",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃自助餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "buffet",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_074",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃自助餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "buffet",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_075",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃自助餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "buffet",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_076",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃西餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "western_cuisine",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_077",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃西餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "western_cuisine",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_078",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃西餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "western_cuisine",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_079",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃西餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "western_cuisine",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_080",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃西餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "western_cuisine",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_081",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃牛排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "western_cuisine",
+          "steak",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine",
+          "steak"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_082",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃牛排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "western_cuisine",
+          "steak",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine",
+          "steak"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_083",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃牛排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "western_cuisine",
+          "steak",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine",
+          "steak"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_084",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃牛排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "western_cuisine",
+          "steak",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine",
+          "steak"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_085",
+      "group": "date_dining_anchor",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃牛排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "western_cuisine",
+          "steak",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "western_cuisine",
+          "steak"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_086",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃烤羊排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "lamb",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "lamb",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_087",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃烤羊排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "lamb",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "lamb",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_088",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃烤羊排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "lamb",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "lamb",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_089",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃烤羊排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "lamb",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "lamb",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_090",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃烤羊排。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "lamb",
+          "bbq",
+          "grill",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "lamb",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_091",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，下午活动你来安排，晚上想吃清淡晚饭。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "date_friendly",
+          "light_meal",
+          "light_food",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_092",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，路线别太折腾，晚上想吃清淡晚饭。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "route_simple",
+          "light_meal",
+          "light_food",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_093",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，预算适中，晚上想吃清淡晚饭。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "budget_fit",
+          "light_meal",
+          "light_food",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_094",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，想有点氛围，晚上想吃清淡晚饭。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "ambience_dining",
+          "light_meal",
+          "light_food",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_095",
+      "group": "date_dining_anchor",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "这周末想和女朋友出去放松一下，不想太夸张，晚上想吃清淡晚饭。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "low_key",
+          "light_meal",
+          "light_food",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "快餐",
+          "茶空间替代正餐",
+          "咖啡替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_096",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想桌游聊天，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "board_game",
+          "group_ok",
+          "nearby",
+          "route_simple"
+        ],
+        "activity_should_match_any": [
+          "board_game",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_097",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想桌游聊天，别太贵。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "board_game",
+          "group_ok",
+          "budget_sensitive"
+        ],
+        "activity_should_match_any": [
+          "board_game",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_098",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想桌游聊天，下雨也能去。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "board_game",
+          "group_ok",
+          "rain_safe",
+          "indoor"
+        ],
+        "activity_should_match_any": [
+          "board_game",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_099",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想桌游聊天，不想排长队。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "board_game",
+          "group_ok",
+          "low_queue"
+        ],
+        "activity_should_match_any": [
+          "board_game",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_100",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想桌游聊天，晚上十点前结束。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州高教园区",
+          "area": "高教园区",
+          "lat": 30.315,
+          "lng": 120.355
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "board_game",
+          "group_ok"
+        ],
+        "activity_should_match_any": [
+          "board_game",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_101",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想唱K，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "karaoke",
+          "group_ok",
+          "nearby",
+          "route_simple"
+        ],
+        "activity_should_match_any": [
+          "karaoke",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_102",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想唱K，别太贵。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "karaoke",
+          "group_ok",
+          "budget_sensitive"
+        ],
+        "activity_should_match_any": [
+          "karaoke",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_103",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想唱K，下雨也能去。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "karaoke",
+          "group_ok",
+          "rain_safe",
+          "indoor"
+        ],
+        "activity_should_match_any": [
+          "karaoke",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_104",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想唱K，不想排长队。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "karaoke",
+          "group_ok",
+          "low_queue"
+        ],
+        "activity_should_match_any": [
+          "karaoke",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_105",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想唱K，晚上十点前结束。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州高教园区",
+          "area": "高教园区",
+          "lat": 30.315,
+          "lng": 120.355
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "karaoke",
+          "group_ok"
+        ],
+        "activity_should_match_any": [
+          "karaoke",
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_106",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想逛商场顺便吃饭，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "group_ok",
+          "mall_walk",
+          "nearby",
+          "route_simple"
+        ],
+        "activity_should_match_any": [
+          "group_ok",
+          "mall_walk"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_107",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想逛商场顺便吃饭，别太贵。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "group_ok",
+          "mall_walk",
+          "budget_sensitive"
+        ],
+        "activity_should_match_any": [
+          "group_ok",
+          "mall_walk"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_108",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想逛商场顺便吃饭，下雨也能去。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "group_ok",
+          "mall_walk",
+          "rain_safe",
+          "indoor"
+        ],
+        "activity_should_match_any": [
+          "group_ok",
+          "mall_walk"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_109",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想逛商场顺便吃饭，不想排长队。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "group_ok",
+          "mall_walk",
+          "low_queue"
+        ],
+        "activity_should_match_any": [
+          "group_ok",
+          "mall_walk"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_110",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想逛商场顺便吃饭，晚上十点前结束。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州高教园区",
+          "area": "高教园区",
+          "lat": 30.315,
+          "lng": 120.355
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "group_ok",
+          "mall_walk"
+        ],
+        "activity_should_match_any": [
+          "group_ok",
+          "mall_walk"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_111",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想找地方喝咖啡聊天，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "coffee",
+          "conversation",
+          "nearby",
+          "route_simple"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "conversation"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_112",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想找地方喝咖啡聊天，别太贵。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "coffee",
+          "conversation",
+          "budget_sensitive"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "conversation"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_113",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想找地方喝咖啡聊天，下雨也能去。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "coffee",
+          "conversation",
+          "rain_safe",
+          "indoor"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "conversation"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_114",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想找地方喝咖啡聊天，不想排长队。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "coffee",
+          "conversation",
+          "low_queue"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "conversation"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_115",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想找地方喝咖啡聊天，晚上十点前结束。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州高教园区",
+          "area": "高教园区",
+          "lat": 30.315,
+          "lng": 120.355
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "coffee",
+          "conversation"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "conversation"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_116",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃自助餐再找地方坐坐，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "group_ok",
+          "nearby",
+          "route_simple"
+        ],
+        "activity_should_match_any": [
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_117",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃自助餐再找地方坐坐，别太贵。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "group_ok",
+          "budget_sensitive"
+        ],
+        "activity_should_match_any": [
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_118",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃自助餐再找地方坐坐，下雨也能去。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "group_ok",
+          "rain_safe",
+          "indoor"
+        ],
+        "activity_should_match_any": [
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_119",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃自助餐再找地方坐坐，不想排长队。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "group_ok",
+          "low_queue"
+        ],
+        "activity_should_match_any": [
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_120",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃自助餐再找地方坐坐，晚上十点前结束。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州高教园区",
+          "area": "高教园区",
+          "lat": 30.315,
+          "lng": 120.355
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "group_ok"
+        ],
+        "activity_should_match_any": [
+          "group_ok"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_121",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃烧烤，别太贵，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "bbq",
+          "grill",
+          "budget_sensitive",
+          "nearby",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_122",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃烧烤，别太贵，别太贵。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "bbq",
+          "grill",
+          "budget_sensitive",
+          "budget_sensitive"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_123",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃烧烤，别太贵，下雨也能去。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "bbq",
+          "grill",
+          "budget_sensitive",
+          "rain_safe",
+          "indoor"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_124",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃烧烤，别太贵，不想排长队。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "bbq",
+          "grill",
+          "budget_sensitive",
+          "low_queue"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_125",
+      "group": "friend_group",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "今天下午和朋友出去玩，四个人想吃烧烤，别太贵，晚上十点前结束。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州高教园区",
+          "area": "高教园区",
+          "lat": 30.315,
+          "lng": 120.355
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "bbq",
+          "grill",
+          "budget_sensitive"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_126",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我有点不开心，想一个人喝点酒，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "alcohol",
+          "light_drink"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_127",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我有点不开心，想一个人找有音乐的地方坐坐，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "music",
+          "acoustic_music"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_128",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我有点不开心，想一个人去金沙湖附近走走，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "light_walk",
+          "nearby"
+        ],
+        "activity_should_match_any": [
+          "light_walk",
+          "nearby"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_129",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我有点不开心，想一个人找安静咖啡店待一会儿，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "coffee",
+          "quiet"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "quiet"
+        ],
+        "restaurant_should_match_any": [
+          "coffee"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_130",
+      "group": "solo_mood_relief",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "我有点不开心，想一个人晚上十点前到家，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        },
+        "preferred_end_time": "2026-05-24T22:00:00+08:00"
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_131",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我最近很累，想一个人喝点酒，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "alcohol",
+          "light_drink"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_132",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我最近很累，想一个人找有音乐的地方坐坐，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "music",
+          "acoustic_music"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_133",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我最近很累，想一个人去金沙湖附近走走，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "light_walk",
+          "nearby"
+        ],
+        "activity_should_match_any": [
+          "light_walk",
+          "nearby"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_134",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我最近很累，想一个人找安静咖啡店待一会儿，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "coffee",
+          "quiet"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "quiet"
+        ],
+        "restaurant_should_match_any": [
+          "coffee"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_135",
+      "group": "solo_mood_relief",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "我最近很累，想一个人晚上十点前到家，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        },
+        "preferred_end_time": "2026-05-24T22:00:00+08:00"
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_136",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我失恋了，想一个人喝点酒，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "alcohol",
+          "light_drink"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_137",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我失恋了，想一个人找有音乐的地方坐坐，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "music",
+          "acoustic_music"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_138",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我失恋了，想一个人去金沙湖附近走走，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "light_walk",
+          "nearby"
+        ],
+        "activity_should_match_any": [
+          "light_walk",
+          "nearby"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_139",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我失恋了，想一个人找安静咖啡店待一会儿，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "coffee",
+          "quiet"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "quiet"
+        ],
+        "restaurant_should_match_any": [
+          "coffee"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_140",
+      "group": "solo_mood_relief",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "我失恋了，想一个人晚上十点前到家，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        },
+        "preferred_end_time": "2026-05-24T22:00:00+08:00"
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_141",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想一个人放松，想一个人喝点酒，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "alcohol",
+          "light_drink"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_142",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想一个人放松，想一个人找有音乐的地方坐坐，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "music",
+          "acoustic_music"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_143",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想一个人放松，想一个人去金沙湖附近走走，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "light_walk",
+          "nearby"
+        ],
+        "activity_should_match_any": [
+          "light_walk",
+          "nearby"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_144",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想一个人放松，想一个人找安静咖啡店待一会儿，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "coffee",
+          "quiet"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "quiet"
+        ],
+        "restaurant_should_match_any": [
+          "coffee"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_145",
+      "group": "solo_mood_relief",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "我想一个人放松，想一个人晚上十点前到家，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        },
+        "preferred_end_time": "2026-05-24T22:00:00+08:00"
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_146",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我心情很烦，想一个人喝点酒，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "alcohol",
+          "light_drink"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_147",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我心情很烦，想一个人找有音乐的地方坐坐，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "music",
+          "acoustic_music"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_148",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我心情很烦，想一个人去金沙湖附近走走，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "light_walk",
+          "nearby"
+        ],
+        "activity_should_match_any": [
+          "light_walk",
+          "nearby"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_149",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我心情很烦，想一个人找安静咖啡店待一会儿，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "coffee",
+          "quiet"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "quiet"
+        ],
+        "restaurant_should_match_any": [
+          "coffee"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_150",
+      "group": "solo_mood_relief",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "我心情很烦，想一个人晚上十点前到家，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        },
+        "preferred_end_time": "2026-05-24T22:00:00+08:00"
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_151",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想低压力散心，想一个人喝点酒，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "alcohol",
+          "light_drink"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_152",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想低压力散心，想一个人找有音乐的地方坐坐，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "music",
+          "acoustic_music"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_153",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想低压力散心，想一个人去金沙湖附近走走，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "light_walk",
+          "nearby"
+        ],
+        "activity_should_match_any": [
+          "light_walk",
+          "nearby"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_154",
+      "group": "solo_mood_relief",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我想低压力散心，想一个人找安静咖啡店待一会儿，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure",
+          "coffee",
+          "quiet"
+        ],
+        "activity_should_match_any": [
+          "coffee",
+          "quiet"
+        ],
+        "restaurant_should_match_any": [
+          "coffee"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_155",
+      "group": "solo_mood_relief",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "我想低压力散心，想一个人晚上十点前到家，别太折腾。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        },
+        "preferred_end_time": "2026-05-24T22:00:00+08:00"
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "low_pressure"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "多人团建",
+          "强社交"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_156",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末我姐来下沙找我玩，想有代表性一点，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_157",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末我姐想去金沙湖附近逛逛再吃饭，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_158",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末我姐想吃一顿体面但不端着的正餐，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "quality_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "quality_dining",
+          "proper_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_159",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末我姐想找好聊天的地方，不要太吵，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "conversation",
+          "quiet"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_160",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末我姐想吃自助餐，路线别太折腾，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "buffet",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_161",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末爸妈来下沙找我玩，想有代表性一点，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_162",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末爸妈想去金沙湖附近逛逛再吃饭，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_163",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末爸妈想吃一顿体面但不端着的正餐，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "quality_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "quality_dining",
+          "proper_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_164",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末爸妈想找好聊天的地方，不要太吵，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "conversation",
+          "quiet"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_165",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末爸妈想吃自助餐，路线别太折腾，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "buffet",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_166",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末哥哥来下沙找我玩，想有代表性一点，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_167",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末哥哥想去金沙湖附近逛逛再吃饭，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_168",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末哥哥想吃一顿体面但不端着的正餐，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "quality_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "quality_dining",
+          "proper_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_169",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末哥哥想找好聊天的地方，不要太吵，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "conversation",
+          "quiet"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_170",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末哥哥想吃自助餐，路线别太折腾，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "buffet",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_171",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末亲戚来下沙找我玩，想有代表性一点，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_172",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末亲戚想去金沙湖附近逛逛再吃饭，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_173",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末亲戚想吃一顿体面但不端着的正餐，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "quality_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "quality_dining",
+          "proper_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_174",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末亲戚想找好聊天的地方，不要太吵，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "conversation",
+          "quiet"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_175",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末亲戚想吃自助餐，路线别太折腾，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "buffet",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_176",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末妹妹来下沙找我玩，想有代表性一点，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州下沙龙湖天街",
+          "area": "下沙",
+          "lat": 30.31,
+          "lng": 120.329
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_177",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末妹妹想去金沙湖附近逛逛再吃饭，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "showcase_local",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_178",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末妹妹想吃一顿体面但不端着的正餐，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "quality_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "quality_dining",
+          "proper_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_179",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末妹妹想找好聊天的地方，不要太吵，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "conversation",
+          "quiet"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_180",
+      "group": "city_light_explore",
+      "difficulty": "medium",
+      "request_body": {
+        "input_text": "这周末妹妹想吃自助餐，路线别太折腾，帮我安排一下。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "buffet",
+          "route_simple"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "电竞",
+          "健身",
+          "低价快餐",
+          "奶茶替代正餐"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_181",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "老婆孩子想去游乐园，但孩子怕吵，晚饭想清淡一点，别排长队。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "child_friendly",
+          "low_queue",
+          "light_meal"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "电竞",
+          "酒吧",
+          "麻辣",
+          "烧烤"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_182",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "想和女朋友吃自助餐，不要给我普通包子面馆，也不要咖啡当正餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "buffet",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "包子",
+          "牛肉汤",
+          "咖啡"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_183",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "想和女朋友吃点清淡的，但不要沙拉外卖，想坐下来吃晚饭。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "咖啡",
+          "奶茶",
+          "火锅",
+          "烧烤"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_184",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我姐来下沙，别安排棋牌和KTV，吃饭想有杭州这边的体面感。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "quality_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "quality_dining",
+          "proper_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "KTV",
+          "电竞"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_185",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "一个人想喝杯酒听点音乐，九点半前回家，路线要简单。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alcohol",
+          "light_drink",
+          "music",
+          "route_simple"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "团建"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_186",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "四个人晚上想吃自助烤肉，预算别太高，饭后找地方坐着聊。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "bbq",
+          "grill",
+          "budget_sensitive",
+          "conversation",
+          "post_meal_conversation"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "restaurant_first",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_187",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "四个人晚上先吃自助烤肉，饭后去KTV唱歌，别太远。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "bbq",
+          "grill",
+          "karaoke",
+          "restaurant_first_request"
+        ],
+        "activity_should_match_any": [
+          "karaoke"
+        ],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "restaurant_first",
+        "should_exclude_terms": [
+          "包子",
+          "牛肉汤",
+          "影院",
+          "酒吧"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_188",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "和女朋友先吃西餐，吃完想在附近散步，不想再喝咖啡。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "western_cuisine",
+          "dinner",
+          "light_walk",
+          "restaurant_first_request"
+        ],
+        "activity_should_match_any": [
+          "lake",
+          "park",
+          "light_walk"
+        ],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "restaurant_first",
+        "should_exclude_terms": [
+          "咖啡",
+          "瑞幸",
+          "星巴克",
+          "烘焙"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_189",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "周末和老婆孩子去嘉年华，晚饭明确要自助餐，不要包子牛肉汤这种。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "buffet",
+          "dinner"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "包子",
+          "牛肉汤",
+          "电竞",
+          "棋牌"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_190",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "女朋友想吃日料，但不要日式快餐和咖啡，想像正式约会晚饭。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "cuisine_japanese",
+          "date_friendly",
+          "dinner"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "cuisine_japanese",
+          "sushi",
+          "izakaya"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "咖啡",
+          "日式咖喱",
+          "蛋包饭"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_191",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "爸妈来金沙湖，想少走路，吃饭不要麦当劳肯德基，找能聊天的正餐。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "route_simple",
+          "proper_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "proper_dining",
+          "quality_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "麦当劳",
+          "肯德基",
+          "奶茶"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_192",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "今天一个人很烦，只想附近走走，不喝酒，也别安排强互动项目。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alone",
+          "mood_relief",
+          "light_walk",
+          "nearby"
+        ],
+        "activity_should_match_any": [
+          "light_walk",
+          "nearby",
+          "quiet"
+        ],
+        "restaurant_should_match_any": [],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "酒吧",
+          "剧本杀",
+          "团建"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_193",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "老婆孩子想去游乐园，但孩子怕吵，晚饭想清淡一点，别排长队。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "family_parent_child",
+        "party_size": 3,
+        "must_have_tags": [
+          "amusement",
+          "child_friendly",
+          "low_queue",
+          "light_meal"
+        ],
+        "activity_should_match_any": [
+          "amusement"
+        ],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "电竞",
+          "酒吧",
+          "麻辣",
+          "烧烤"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_194",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "想和女朋友吃自助餐，不要给我普通包子面馆，也不要咖啡当正餐。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "buffet",
+          "dinner",
+          "date_friendly"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "包子",
+          "牛肉汤",
+          "咖啡"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_195",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "想和女朋友吃点清淡的，但不要沙拉外卖，想坐下来吃晚饭。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "light_meal",
+          "light_food",
+          "dinner"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "light_meal",
+          "light_food"
+        ],
+        "timeline_order": "dinner_last",
+        "should_exclude_terms": [
+          "咖啡",
+          "奶茶",
+          "火锅",
+          "烧烤"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_196",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "我姐来下沙，别安排棋牌和KTV，吃饭想有杭州这边的体面感。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "city_light_explore",
+        "party_size": 2,
+        "must_have_tags": [
+          "host_guest",
+          "quality_dining"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "quality_dining",
+          "proper_dining"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "棋牌",
+          "KTV",
+          "电竞"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_197",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "一个人想喝杯酒听点音乐，九点半前回家，路线要简单。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "fallback_unknown",
+        "party_size": 1,
+        "must_have_tags": [
+          "alcohol",
+          "light_drink",
+          "music",
+          "route_simple"
+        ],
+        "activity_should_match_any": [
+          "music",
+          "acoustic_music"
+        ],
+        "restaurant_should_match_any": [
+          "alcohol",
+          "light_drink"
+        ],
+        "timeline_order": "flexible",
+        "should_exclude_terms": [
+          "亲子",
+          "团建"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_198",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "四个人晚上想吃自助烤肉，预算别太高，饭后找地方坐着聊。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "bbq",
+          "grill",
+          "budget_sensitive",
+          "conversation",
+          "post_meal_conversation"
+        ],
+        "activity_should_match_any": [],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "restaurant_first",
+        "should_exclude_terms": [
+          "高价",
+          "长队"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_199",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "四个人晚上先吃自助烤肉，饭后去KTV唱歌，别太远。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "friend_group",
+        "party_size": 4,
+        "must_have_tags": [
+          "buffet",
+          "bbq",
+          "grill",
+          "karaoke",
+          "restaurant_first_request"
+        ],
+        "activity_should_match_any": [
+          "karaoke"
+        ],
+        "restaurant_should_match_any": [
+          "buffet",
+          "bbq",
+          "grill"
+        ],
+        "timeline_order": "restaurant_first",
+        "should_exclude_terms": [
+          "包子",
+          "牛肉汤",
+          "影院",
+          "酒吧"
+        ]
+      },
+      "evaluation_notes": ""
+    },
+    {
+      "case_id": "rule_eval_200",
+      "group": "edge_constraints",
+      "difficulty": "hard",
+      "request_body": {
+        "input_text": "和女朋友先吃西餐，吃完想在附近散步，不想再喝咖啡。，如果附近没有就给备选但说明是模拟。",
+        "use_memory": false,
+        "user_location": {
+          "label": "杭州金沙湖地铁站",
+          "area": "金沙湖",
+          "lat": 30.309,
+          "lng": 120.319
+        }
+      },
+      "expected": {
+        "scenario": "anniversary_emotion",
+        "party_size": 2,
+        "must_have_tags": [
+          "western_cuisine",
+          "dinner",
+          "light_walk",
+          "restaurant_first_request"
+        ],
+        "activity_should_match_any": [
+          "lake",
+          "park",
+          "light_walk"
+        ],
+        "restaurant_should_match_any": [
+          "western_cuisine"
+        ],
+        "timeline_order": "restaurant_first",
+        "should_exclude_terms": [
+          "咖啡",
+          "瑞幸",
+          "星巴克",
+          "烘焙"
+        ]
+      },
+      "evaluation_notes": ""
+    }
+  ]
+}

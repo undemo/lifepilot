@@ -1,0 +1,61 @@
+{
+  "version": "2026-05-23",
+  "story": "可维护推荐策略：受控语义词典、关系/情绪画像、硬约束门控、排序重排和显式餐饮锚点。代码只消费本策略，不把内部分数暴露到用户API。",
+  "lexicon": {
+    "buffet": ["自助餐", "自助烤肉", "自助烧烤", "自助火锅", "自助小火锅", "放题", "海鲜自助", "烤肉自助", "烧烤自助"],
+    "bbq": ["烤肉", "烧烤", "烧肉", "炭烤", "烤串", "烤吧", "自助烤肉", "日式烧肉", "韩式烤肉"],
+    "grill": ["烤肉", "烧烤", "烧肉", "炭烤", "烤串", "烤吧", "自助烤肉", "日式烧肉", "韩式烤肉"],
+    "hotpot": ["火锅", "小火锅", "毛肚", "涮锅", "酸汤火锅"],
+    "cuisine_japanese": ["日料", "日式", "日本料理", "寿司", "刺身", "居酒屋", "烧鸟", "鮨", "和风", "会席", "日式咖喱", "回转寿司"],
+    "sushi": ["寿司", "鮨", "刺身", "回转寿司"],
+    "izakaya": ["居酒屋", "烧鸟"],
+    "hands_on": ["DIY", "diy", "手作", "手工", "陶艺", "拼豆", "油画", "烘焙DIY"],
+    "craft": ["DIY", "diy", "手作", "手工", "陶艺", "拼豆", "油画", "烘焙DIY"],
+    "low_fit_activity": ["棋牌", "麻将", "KTV", "电竞", "网咖", "台球", "健身", "游泳", "PS5", "VR", "剧本杀", "桌游"],
+    "low_end_chain": ["米村", "拌饭", "麦当劳", "肯德基", "德克士", "老乡鸡", "老娘舅", "萨莉亚", "必胜客", "达美乐", "麻辣烫"]
+  },
+  "explicit_dining_anchors": {
+    "buffet": {
+      "required_any": ["buffet"],
+      "boost_tags": ["buffet", "proper_dining", "dinner"],
+      "budget_pp": 240,
+      "note": "用户明说自助餐，餐厅槽位必须命中自助餐/放题语义。"
+    },
+    "hotpot": {
+      "required_any": ["hotpot"],
+      "boost_tags": ["hotpot", "proper_dining", "dinner"],
+      "budget_pp": 160,
+      "note": "用户明说火锅，餐厅槽位必须命中火锅语义。"
+    },
+    "cuisine_japanese": {
+      "required_any": ["cuisine_japanese", "sushi", "izakaya"],
+      "boost_tags": ["cuisine_japanese", "sushi", "izakaya", "proper_dining", "dinner"],
+      "budget_pp": 220,
+      "note": "用户明说日料/日本料理，餐厅槽位必须命中日料语义。"
+    },
+    "sushi": {
+      "required_any": ["cuisine_japanese", "sushi"],
+      "boost_tags": ["cuisine_japanese", "sushi", "proper_dining", "dinner"],
+      "budget_pp": 220,
+      "note": "用户明说寿司，餐厅槽位必须命中日料或寿司语义。"
+    },
+    "izakaya": {
+      "required_any": ["cuisine_japanese", "izakaya"],
+      "boost_tags": ["cuisine_japanese", "izakaya", "proper_dining", "dinner"],
+      "budget_pp": 220,
+      "note": "用户明说居酒屋/烧鸟，餐厅槽位必须命中日料小馆语义。"
+    },
+    "bbq": {
+      "required_any": ["bbq", "grill"],
+      "boost_tags": ["bbq", "grill", "proper_dining", "dinner"],
+      "budget_pp": 180,
+      "note": "用户明说烤肉/烧烤，餐厅槽位必须命中烤肉语义。"
+    },
+    "grill": {
+      "required_any": ["bbq", "grill"],
+      "boost_tags": ["bbq", "grill", "proper_dining", "dinner"],
+      "budget_pp": 180,
+      "note": "用户明说烤肉/烧烤，餐厅槽位必须命中烤肉语义。"
+    }
+  }
+}

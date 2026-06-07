@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LifePilot Gaode POI Viewer</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --ink: #17202a;
+      --muted: #667085;
+      --line: #d9dee7;
+      --blue: #2563eb;
+      --green: #0f766e;
+      --yellow: #b7791f;
+      --red: #b42318;
+      --shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    .header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    button, select, input {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      height: 34px;
+      border-radius: 6px;
+      padding: 0 10px;
+      font-size: 13px;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button.active {
+      border-color: var(--blue);
+      background: #eff6ff;
+      color: var(--blue);
+    }
+
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px 20px 32px;
+    }
+
+    .notice {
+      display: none;
+      margin-bottom: 14px;
+      border: 1px solid #f2c94c;
+      background: #fffbeb;
+      color: #7a4b00;
+      padding: 10px 12px;
+      border-radius: var(--radius);
+      font-size: 13px;
+    }
+
+    .notice.visible { display: block; }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .summary-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      min-height: 86px;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .metric .value {
+      margin-top: 8px;
+      font-size: 26px;
+      font-weight: 750;
+      line-height: 1;
+    }
+
+    .metric .detail {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .panel-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .panel-subtitle {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .panel-body { padding: 14px; }
+
+    .filters {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .filters input, .filters select { width: 100%; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .view { display: none; }
+    .view.active { display: block; }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 620px;
+      border-top: 1px solid var(--line);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      background: #f8fafc;
+      color: #344054;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      white-space: nowrap;
+    }
+
+    td {
+      border-bottom: 1px solid #edf0f5;
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    tr:hover td { background: #f8fbff; }
+
+    .tag-list {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+      max-width: 360px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 20px;
+      border: 1px solid #d6e4ff;
+      background: #f3f7ff;
+      color: #1849a9;
+      border-radius: 999px;
+      padding: 1px 7px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 650;
+      background: #eef2f6;
+      color: #344054;
+    }
+
+    .restaurant { background: #ecfdf3; color: #027a48; }
+    .activity { background: #eff6ff; color: #175cd3; }
+    .walk_spot { background: #f0fdf4; color: #166534; }
+    .service { background: #fffbeb; color: #92400e; }
+    .transport_anchor { background: #fdf2f8; color: #9d174d; }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 112px 1fr 44px;
+      gap: 10px;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 12px;
+    }
+
+    .bar-track {
+      height: 10px;
+      background: #edf0f5;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 999px;
+    }
+
+    .scatter {
+      position: relative;
+      min-height: 420px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .scatter::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(102,112,133,0.14) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(102,112,133,0.14) 1px, transparent 1px);
+      background-size: 20% 20%;
+    }
+
+    .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 4px rgba(16, 24, 40, 0.28);
+      transform: translate(-50%, -50%);
+    }
+
+    .dot.restaurant { background: #12b76a; }
+    .dot.activity { background: #2e90fa; }
+    .dot.walk_spot { background: #84cc16; }
+    .dot.service { background: #f59e0b; }
+    .dot.transport_anchor { background: #ec4899; }
+
+    .legend {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend i {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .json-tree {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 12px;
+      line-height: 1.55;
+      max-height: 700px;
+      overflow: auto;
+      background: #0f172a;
+      color: #dbeafe;
+      border-radius: var(--radius);
+      padding: 12px;
+    }
+
+    .json-tree details { margin-left: 14px; }
+    .json-tree summary { cursor: pointer; color: #bfdbfe; }
+    .json-key { color: #93c5fd; }
+    .json-string { color: #bbf7d0; }
+    .json-number { color: #fde68a; }
+    .json-bool { color: #fca5a5; }
+    .json-null { color: #cbd5e1; }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    pre {
+      margin: 0;
+      max-height: 520px;
+      overflow: auto;
+      background: #0f172a;
+      color: #dbeafe;
+      border-radius: var(--radius);
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 14px;
+    }
+
+    .winner {
+      font-weight: 750;
+      color: var(--green);
+    }
+
+    .metric-note {
+      color: var(--muted);
+      font-size: 12px;
+      max-width: 520px;
+    }
+
+    @media (max-width: 1120px) {
+      .summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .layout { grid-template-columns: 1fr; }
+      .chart-grid, .compare-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 700px) {
+      .header-inner { grid-template-columns: 1fr; }
+      .toolbar { justify-content: flex-start; }
+      main { padding: 14px 12px 24px; }
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .metric .value { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div>
+        <h1>LifePilot 高德 POI 数据可视化</h1>
+        <div class="subtitle">对比高德原始响应和转换后的 mock_pois.json，快速检查结构、覆盖和字段映射。</div>
+      </div>
+      <div class="toolbar">
+        <button type="button" class="tab-button active" data-view="overview">概览</button>
+        <button type="button" class="tab-button" data-view="evaluation">策略评估</button>
+        <button type="button" class="tab-button" data-view="capability">API 能力</button>
+        <button type="button" class="tab-button" data-view="dataset">500 候选池</button>
+        <button type="button" class="tab-button" data-view="mock">Mock POI</button>
+        <button type="button" class="tab-button" data-view="raw">高德 Raw</button>
+        <button type="button" class="tab-button" data-view="compare">单点对比</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="notice" class="notice"></div>
+
+    <section class="grid summary-grid" id="summary"></section>
+
+    <section id="overview" class="view active">
+      <div class="chart-grid">
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">类别和区域分布</div>
+              <div class="panel-subtitle">来自转换后的 mock_pois.json</div>
+            </div>
+          </div>
+          <div class="panel-body" id="distribution"></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">坐标散点</div>
+              <div class="panel-subtitle">按下沙/金沙湖/高教园区边界归一化显示</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="scatter" id="scatter"></div>
+            <div class="legend" id="legend"></div>
+          </div>
+        </section>
+      </div>
+      <section class="panel" style="margin-top:14px;">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">高德静态地图</div>
+            <div class="panel-subtitle">使用 /v3/staticmap 加载真实地图底图和 POI markers，Key 只在本页输入，不写入文件。</div>
+          </div>
+          <div class="toolbar">
+            <select id="mapDataset">
+              <option value="mock">关键词建模 POI</option>
+              <option value="around">周边搜索 POI</option>
+              <option value="combined">去重合并 POI</option>
+            </select>
+            <input id="mapKey" type="password" placeholder="输入高德 Web 服务 Key" style="width:220px;" />
+            <button type="button" id="loadMap">加载地图</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div id="mapHint" class="empty">高德静态地图 API 支持真实地图图片和 markers。输入 key 后会在本地浏览器生成请求 URL。</div>
+          <img id="staticMap" alt="高德静态地图" style="display:none;width:100%;max-height:560px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#f8fafc;" />
+        </div>
+      </section>
+    </section>
+
+    <section id="evaluation" class="view">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">关键词建模 vs 坐标周边搜索</div>
+            <div class="panel-subtitle">指标来自 output/poi_strategy_evaluation.json；winner 只按每项公式计算，不做主观判断。</div>
+          </div>
+        </div>
+        <div class="panel-body" id="evaluationBody"></div>
+      </section>
+    </section>
+
+    <section id="capability" class="view">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">高德 API 可还原字段矩阵</div>
+            <div class="panel-subtitle">小样本探针结果，目标是判断哪些 Mock 数据能替换成真实来源。</div>
+          </div>
+        </div>
+        <div class="panel-body" id="capabilityBody"></div>
+      </section>
+    </section>
+
+    <section id="dataset" class="view">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">500 POI 候选池生成报告</div>
+            <div class="panel-subtitle">读取 reports/generate_lifepilot_dataset_report.json、output/gaode_poi_review_candidates.json 和 enrichment sidecar。</div>
+          </div>
+        </div>
+        <div class="panel-body" id="datasetBody"></div>
+      </section>
+    </section>
+
+    <section id="mock" class="view">
+      <div class="layout">
+        <aside class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">筛选</div>
+              <div class="panel-subtitle">搜索名称、地址、标签和类别</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="filters">
+              <input id="search" type="search" placeholder="搜索 POI 名称 / 地址 / 标签" />
+              <select id="categoryFilter"></select>
+              <select id="areaFilter"></select>
+            </div>
+            <div id="selectedMock" class="empty">点击右侧表格行查看详情。</div>
+          </div>
+        </aside>
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">mock_pois.json</div>
+              <div class="panel-subtitle" id="mockCount"></div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>名称</th>
+                  <th>类别</th>
+                  <th>区域</th>
+                  <th>坐标</th>
+                  <th>评分/人均</th>
+                  <th>标签</th>
+                </tr>
+              </thead>
+              <tbody id="mockRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="raw" class="view">
+      <div class="layout">
+        <aside class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">高德请求批次</div>
+              <div class="panel-subtitle">每次响应都完整保存在 raw 文件里</div>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>关键词</th>
+                  <th>类型</th>
+                  <th>返回</th>
+                </tr>
+              </thead>
+              <tbody id="rawRequestRows"></tbody>
+            </table>
+          </div>
+        </aside>
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <div class="panel-title">gaode_raw_poi_responses.json 结构树</div>
+              <div class="panel-subtitle">展开 response.pois 可看 type、typecode、biz_ext、photos 等原始字段</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div id="rawTree" class="json-tree"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="compare" class="view">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">单点对比</div>
+            <div class="panel-subtitle">按名称匹配 mock POI 和高德 raw POI，查看字段如何被转换</div>
+          </div>
+          <select id="compareSelect"></select>
+        </div>
+        <div class="panel-body compare-grid">
+          <div>
+            <div class="panel-title" style="margin-bottom:8px;">转换后 mock POI</div>
+            <pre id="mockJson"></pre>
+          </div>
+          <div>
+            <div class="panel-title" style="margin-bottom:8px;">高德原始 POI</div>
+            <pre id="rawJson"></pre>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const CATEGORY_LABELS = {
+      restaurant: "餐饮",
+      activity: "活动",
+      walk_spot: "步道/景点",
+      service: "服务",
+      transport_anchor: "交通锚点"
+    };
+
+    const state = {
+      mock: null,
+      raw: null,
+      aroundMock: null,
+      combinedMock: null,
+      evaluation: null,
+      capability: null,
+      datasetReport: null,
+      poiEnrichment: null,
+      reviewCandidates: null,
+      rawPois: [],
+      filtered: [],
+      selected: null
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    async function loadJson(path) {
+      const response = await fetch(path, { cache: "no-store" });
+      if (!response.ok) throw new Error(`${path} ${response.status}`);
+      return response.json();
+    }
+
+    async function init() {
+      try {
+        const [mock, raw, aroundMock, combinedMock, evaluation, capability, datasetReport, poiEnrichment, reviewCandidates] = await Promise.all([
+          loadJson("output/mock_pois.json"),
+          loadJson("output/gaode_raw_poi_responses.json"),
+          loadOptionalJson("output/around_mock_pois.json"),
+          loadOptionalJson("output/combined_deduped_mock_pois.json"),
+          loadOptionalJson("output/poi_strategy_evaluation.json"),
+          loadOptionalJson("output/gaode_capability_probe_report.json"),
+          loadOptionalJson("reports/generate_lifepilot_dataset_report.json"),
+          loadOptionalJson("output/gaode_poi_enrichment.json"),
+          loadOptionalJson("output/gaode_poi_review_candidates.json")
+        ]);
+        state.mock = mock;
+        state.raw = raw;
+        state.aroundMock = aroundMock;
+        state.combinedMock = combinedMock;
+        state.evaluation = evaluation;
+        state.capability = capability;
+        state.datasetReport = datasetReport;
+        state.poiEnrichment = poiEnrichment;
+        state.reviewCandidates = reviewCandidates;
+        state.rawPois = flattenRawPois(raw);
+        renderAll();
+      } catch (error) {
+        $("notice").classList.add("visible");
+        $("notice").innerHTML = [
+          "无法直接读取 JSON。请在 tools/gaode_data_factory 目录运行：",
+          "<code>python -m http.server 8765</code>",
+          "然后打开 <code>http://127.0.0.1:8765/viewer.html</code>。错误：",
+          escapeHtml(error.message)
+        ].join(" ");
+      }
+    }
+
+    async function loadOptionalJson(path) {
+      try {
+        return await loadJson(path);
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function flattenRawPois(raw) {
+      return (raw.responses || []).flatMap((entry, responseIndex) => {
+        const pois = entry.response && Array.isArray(entry.response.pois) ? entry.response.pois : [];
+        return pois.map((poi, poiIndex) => ({
+          ...poi,
+          __responseIndex: responseIndex,
+          __poiIndex: poiIndex,
+          __request: entry.request,
+          __lifePilotMapping: entry.life_pilot_mapping
+        }));
+      });
+    }
+
+    function renderAll() {
+      renderSummary();
+      renderDistribution();
+      renderScatter();
+      setupFilters();
+      renderMockTable();
+      renderRawRequests();
+      renderRawTree();
+      setupCompare();
+      renderEvaluation();
+      renderCapability();
+      renderDatasetReport();
+      setupStaticMap();
+      setupTabs();
+    }
+
+    function renderSummary() {
+      const pois = state.mock.pois || [];
+      const rawResponses = state.raw.responses || [];
+      const rawPoiCount = state.rawPois.length;
+      const categories = unique(pois.map(p => p.category)).length;
+      const areas = unique(pois.map(p => p.area)).length;
+      const rated = pois.filter(p => typeof p.rating === "number").length;
+      const priced = pois.filter(p => typeof p.price_per_person === "number").length;
+      $("summary").innerHTML = [
+        metric("Mock POI", pois.length, "转换后可直接给 LifePilot 使用"),
+        metric("Raw 响应", rawResponses.length, "保留高德完整返回结构"),
+        metric("Raw POI", rawPoiCount, "所有请求返回的原始 POI 合计"),
+        metric("类别覆盖", categories, unique(pois.map(p => p.category)).map(labelCategory).join(" / ")),
+        metric("区域覆盖", areas, unique(pois.map(p => p.area)).join(" / ")),
+        metric("评分/人均", `${rated}/${priced}`, "评分数 / 人均价格数")
+      ].join("");
+    }
+
+    function metric(label, value, detail) {
+      return `<div class="metric"><div class="label">${escapeHtml(label)}</div><div class="value">${escapeHtml(String(value))}</div><div class="detail" title="${escapeHtml(detail)}">${escapeHtml(detail)}</div></div>`;
+    }
+
+    function renderDistribution() {
+      const pois = state.mock.pois || [];
+      $("distribution").innerHTML = [
+        "<div class=\"panel-title\" style=\"margin-bottom:8px;\">按类别</div>",
+        bars(countBy(pois, "category"), labelCategory),
+        "<div class=\"panel-title\" style=\"margin:18px 0 8px;\">按区域</div>",
+        bars(countBy(pois, "area"), x => x)
+      ].join("");
+    }
+
+    function bars(counts, labelFn) {
+      const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const max = Math.max(1, ...entries.map(([, count]) => count));
+      return entries.map(([name, count]) => `
+        <div class="bar-row">
+          <div title="${escapeHtml(name)}">${escapeHtml(labelFn(name))}</div>
+          <div class="bar-track"><div class="bar" style="width:${(count / max) * 100}%"></div></div>
+          <div>${count}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderScatter() {
+      const pois = state.mock.pois || [];
+      const bounds = {
+        latMin: 30.285,
+        latMax: 30.345,
+        lngMin: 120.300,
+        lngMax: 120.420
+      };
+      $("scatter").innerHTML = pois.map(poi => {
+        const lat = poi.location && poi.location.lat;
+        const lng = poi.location && poi.location.lng;
+        if (typeof lat !== "number" || typeof lng !== "number") return "";
+        const x = clamp((lng - bounds.lngMin) / (bounds.lngMax - bounds.lngMin), 0, 1) * 100;
+        const y = (1 - clamp((lat - bounds.latMin) / (bounds.latMax - bounds.latMin), 0, 1)) * 100;
+        return `<span class="dot ${escapeHtml(poi.category)}" style="left:${x}%;top:${y}%;" title="${escapeHtml(poi.name)} | ${escapeHtml(poi.area)} | ${lat}, ${lng}"></span>`;
+      }).join("");
+      $("legend").innerHTML = Object.keys(CATEGORY_LABELS).map(category => `<span><i class="${category}" style="background:${dotColor(category)}"></i>${CATEGORY_LABELS[category]}</span>`).join("");
+    }
+
+    function setupFilters() {
+      const pois = state.mock.pois || [];
+      $("categoryFilter").innerHTML = `<option value="">全部类别</option>` + unique(pois.map(p => p.category)).map(c => `<option value="${escapeHtml(c)}">${escapeHtml(labelCategory(c))}</option>`).join("");
+      $("areaFilter").innerHTML = `<option value="">全部区域</option>` + unique(pois.map(p => p.area)).map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join("");
+      ["search", "categoryFilter", "areaFilter"].forEach(id => $(id).addEventListener("input", renderMockTable));
+    }
+
+    function renderMockTable() {
+      const q = $("search").value.trim().toLowerCase();
+      const category = $("categoryFilter").value;
+      const area = $("areaFilter").value;
+      const pois = state.mock.pois || [];
+      state.filtered = pois.filter(poi => {
+        const text = [poi.name, poi.address, poi.category, poi.sub_category, poi.area, ...(poi.tags || [])].join(" ").toLowerCase();
+        return (!q || text.includes(q)) && (!category || poi.category === category) && (!area || poi.area === area);
+      });
+      $("mockCount").textContent = `${state.filtered.length} / ${pois.length} 条`;
+      $("mockRows").innerHTML = state.filtered.map((poi, index) => `
+        <tr data-index="${index}">
+          <td><strong>${escapeHtml(poi.name)}</strong><br><span style="color:var(--muted)">${escapeHtml(poi.address)}</span></td>
+          <td><span class="pill ${escapeHtml(poi.category)}">${escapeHtml(labelCategory(poi.category))}</span><br><span style="color:var(--muted)">${escapeHtml(poi.sub_category || "")}</span></td>
+          <td>${escapeHtml(poi.area)}</td>
+          <td>${escapeHtml(String(poi.location.lat))}<br>${escapeHtml(String(poi.location.lng))}</td>
+          <td>${escapeHtml(String(poi.rating ?? "-"))}<br>${escapeHtml(priceText(poi.price_per_person))}</td>
+          <td><div class="tag-list">${(poi.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div></td>
+        </tr>
+      `).join("");
+      Array.from($("mockRows").querySelectorAll("tr")).forEach(row => {
+        row.addEventListener("click", () => {
+          state.selected = state.filtered[Number(row.dataset.index)];
+          renderSelectedMock();
+        });
+      });
+    }
+
+    function renderSelectedMock() {
+      const poi = state.selected;
+      if (!poi) return;
+      const raw = findRawMatch(poi);
+      $("selectedMock").innerHTML = `
+        <div style="display:grid;gap:8px;font-size:13px;">
+          <div><strong>${escapeHtml(poi.name)}</strong></div>
+          <div>${escapeHtml(poi.poi_id)}</div>
+          <div><span class="pill ${escapeHtml(poi.category)}">${escapeHtml(labelCategory(poi.category))}</span></div>
+          <div>坐标：${escapeHtml(String(poi.location.lng))}, ${escapeHtml(String(poi.location.lat))}</div>
+          <div>评分：${escapeHtml(String(poi.rating ?? "-"))}，人均：${escapeHtml(priceText(poi.price_per_person))}</div>
+          <div>高德原始匹配：${raw ? escapeHtml(raw.id || raw.name) : "未找到同名 raw 记录"}</div>
+        </div>
+      `;
+    }
+
+    function renderRawRequests() {
+      const responses = state.raw.responses || [];
+      $("rawRequestRows").innerHTML = responses.map((entry, index) => {
+        const req = entry.request || {};
+        const pois = entry.response && Array.isArray(entry.response.pois) ? entry.response.pois.length : 0;
+        return `
+          <tr data-response-index="${index}">
+            <td><strong>${escapeHtml(req.keywords || "")}</strong><br><span style="color:var(--muted)">page ${escapeHtml(String(req.page || ""))}</span></td>
+            <td>${escapeHtml(req.types || "-")}</td>
+            <td>${pois}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderRawTree() {
+      const compactRaw = {
+        version: state.raw.version,
+        source: state.raw.source,
+        area: state.raw.area,
+        created_at: state.raw.created_at,
+        responses: (state.raw.responses || []).map(entry => ({
+          request: entry.request,
+          life_pilot_mapping: entry.life_pilot_mapping,
+          response: {
+            count: entry.response && entry.response.count,
+            infocode: entry.response && entry.response.infocode,
+            info: entry.response && entry.response.info,
+            pois: entry.response && Array.isArray(entry.response.pois) ? entry.response.pois.slice(0, 3) : []
+          }
+        }))
+      };
+      $("rawTree").innerHTML = renderJsonTree(compactRaw, "gaode_raw_poi_responses.json");
+    }
+
+    function setupCompare() {
+      const pois = state.mock.pois || [];
+      $("compareSelect").innerHTML = pois.map((poi, index) => `<option value="${index}">${escapeHtml(poi.name)}</option>`).join("");
+      $("compareSelect").addEventListener("change", renderCompare);
+      renderCompare();
+    }
+
+    function renderEvaluation() {
+      const evaluation = state.evaluation;
+      if (!evaluation) {
+        $("evaluationBody").innerHTML = `<div class="empty">未找到 output/poi_strategy_evaluation.json。运行 compare_poi_strategies.py 后会显示指标。</div>`;
+        return;
+      }
+      const keyword = evaluation.strategies.keyword;
+      const around = evaluation.strategies.around;
+      const rows = Object.entries(evaluation.metric_winners || {}).map(([metric, item]) => {
+        const note = evaluation.metric_notes && evaluation.metric_notes[metric] ? evaluation.metric_notes[metric] : "";
+        return `
+          <tr>
+            <td><strong>${escapeHtml(metric)}</strong><div class="metric-note">${escapeHtml(note)}</div></td>
+            <td>${escapeHtml(String(item.keyword))}</td>
+            <td>${escapeHtml(String(item.around))}</td>
+            <td>${escapeHtml(item.direction)}</td>
+            <td class="${item.winner === "tie" ? "" : "winner"}">${escapeHtml(item.winner)}</td>
+          </tr>
+        `;
+      }).join("");
+      $("evaluationBody").innerHTML = `
+        <div class="summary-grid grid" style="margin-bottom:14px;">
+          ${metric("关键词 accepted", keyword.accepted_poi_count, `请求 ${keyword.request_count} 次，raw unique ${keyword.raw_unique_poi_count}`)}
+          ${metric("周边 accepted", around.accepted_poi_count, `请求 ${around.request_count} 次，raw unique ${around.raw_unique_poi_count}`)}
+          ${metric("Raw 重合", evaluation.overlap.raw_overlap_count, `keyword ${evaluation.overlap.raw_overlap_ratio_of_keyword} / around ${evaluation.overlap.raw_overlap_ratio_of_around}`)}
+          ${metric("合并去重后", evaluation.overlap.combined_mock_poi_count, `移除重复 ${evaluation.overlap.combined_mock_duplicates_removed}`)}
+          ${metric("关键词 bbox", keyword.coordinate_bbox_km2, "km²")}
+          ${metric("周边 bbox", around.coordinate_bbox_km2, "km²")}
+        </div>
+        <div class="table-wrap" style="max-height:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>指标</th>
+                <th>关键词建模</th>
+                <th>周边搜索</th>
+                <th>方向</th>
+                <th>Winner</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="chart-grid" style="margin-top:14px;">
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">关键词类别分布</div>
+            ${bars(keyword.category_counts || {}, labelCategory)}
+          </section>
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">周边类别分布</div>
+            ${bars(around.category_counts || {}, labelCategory)}
+          </section>
+        </div>
+        <div class="chart-grid" style="margin-top:14px;">
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">关键词 raw 字段覆盖</div>
+            ${bars(keyword.raw_field_coverage || {}, x => x)}
+          </section>
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">周边 raw 字段覆盖</div>
+            ${bars(around.raw_field_coverage || {}, x => x)}
+          </section>
+        </div>
+      `;
+    }
+
+    function renderCapability() {
+      const report = state.capability;
+      if (!report) {
+        $("capabilityBody").innerHTML = `<div class="empty">未找到 output/gaode_capability_probe_report.json。运行 gaode_api_capability_probe.py 后会显示能力矩阵。</div>`;
+        return;
+      }
+      const stats = report.poi_stats || {};
+      const rows = (report.capability_matrix || []).map(item => `
+        <tr>
+          <td><strong>${escapeHtml(item.file)}</strong><br><span class="pill">${escapeHtml(item.gaode_restore_level)}</span></td>
+          <td>${(item.real_fields || []).map(field => `<span class="tag">${escapeHtml(field)}</span>`).join("")}</td>
+          <td><pre style="max-height:180px;">${escapeHtml(JSON.stringify(item.field_coverage_in_probe || {}, null, 2))}</pre></td>
+          <td>${(item.still_mock_or_rule || []).map(field => `<span class="tag">${escapeHtml(field)}</span>`).join("")}</td>
+        </tr>
+      `).join("");
+      $("capabilityBody").innerHTML = `
+        <div class="summary-grid grid" style="margin-bottom:14px;">
+          ${metric("Raw POI", stats.raw_seen || 0, "钱塘区精品探针小样本")}
+          ${metric("留下候选", stats.accepted_after_filter || 0, "过滤后可作为真实 POI 池")}
+          ${metric("低评分过滤", stats.low_rating_filtered || 0, "有评分且低于 4.0")}
+          ${metric("噪声过滤", stats.noise_filtered || 0, "汽修/建材/公司等")}
+          ${metric("重复过滤", stats.duplicate || 0, "按高德 POI id 去重")}
+          ${metric("范围", "钱塘区", "adcode=330114")}
+        </div>
+        <div class="table-wrap" style="max-height:none;">
+          <table>
+            <thead>
+              <tr>
+                <th>文件</th>
+                <th>可真实还原字段</th>
+                <th>本次覆盖率/验证</th>
+                <th>仍需 Mock/规则/AI</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="chart-grid" style="margin-top:14px;">
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">精品候选 Top 20</div>
+            <div class="table-wrap" style="max-height:420px;">
+              <table>
+                <thead><tr><th>名称</th><th>类型</th><th>评分</th><th>人均</th><th>营业时间</th></tr></thead>
+                <tbody>${(report.top_pois || []).slice(0, 20).map(poi => `<tr><td>${escapeHtml(poi.name)}</td><td>${escapeHtml(poi.typecode || "")}</td><td>${escapeHtml(String(poi.rating ?? "-"))}</td><td>${escapeHtml(priceText(poi.cost))}</td><td>${escapeHtml(poi.open_time || "-")}</td></tr>`).join("")}</tbody>
+              </table>
+            </div>
+          </section>
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">路线和天气验证</div>
+            <pre>${escapeHtml(JSON.stringify({ route_samples: report.route_samples, weather_samples: report.weather_samples }, null, 2))}</pre>
+          </section>
+        </div>
+      `;
+    }
+
+    function renderDatasetReport() {
+      const report = state.datasetReport;
+      if (!report) {
+        $("datasetBody").innerHTML = `<div class="empty">未找到 reports/generate_lifepilot_dataset_report.json。运行 generate_lifepilot_dataset.py 后会显示 500 候选池生成结果。</div>`;
+        return;
+      }
+      const review = state.reviewCandidates && Array.isArray(state.reviewCandidates.candidates) ? state.reviewCandidates.candidates : [];
+      const enrichmentCount = state.poiEnrichment && state.poiEnrichment.enrichments ? Object.keys(state.poiEnrichment.enrichments).length : 0;
+      const routeReport = report.route_report || {};
+      $("datasetBody").innerHTML = `
+        <div class="summary-grid grid" style="margin-bottom:14px;">
+          ${metric("目标 POI", report.target_pois || 0, "脚本目标数量")}
+          ${metric("入选 POI", report.accepted_pois || 0, report.success ? "已达到目标" : "未达到目标")}
+          ${metric("Review 候选", review.length, "给人工核查")}
+          ${metric("Enrichment", enrichmentCount, "图片/电话/typecode 等 sidecar")}
+          ${metric("路线", routeReport.route_count || 0, routeReport.skipped ? "本次跳过路线" : `pair ${routeReport.route_pair_count || 0}`)}
+          ${metric("Raw 来源", report.raw_source || "-", "不含 API key")}
+        </div>
+        <div class="chart-grid">
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">类别分布</div>
+            ${bars(report.category_counts || {}, labelCategory)}
+          </section>
+          <section>
+            <div class="panel-title" style="margin-bottom:8px;">过滤统计</div>
+            ${bars(report.filter_stats || {}, x => x)}
+          </section>
+        </div>
+        <div class="panel-title" style="margin:18px 0 8px;">人工复核候选 Top 50</div>
+        <div class="table-wrap" style="max-height:520px;">
+          <table>
+            <thead><tr><th>名称</th><th>类别</th><th>区域</th><th>评分/人均</th><th>高德类型</th><th>图片/电话</th><th>质量分</th></tr></thead>
+            <tbody>${review.slice(0, 50).map(item => `
+              <tr>
+                <td><strong>${escapeHtml(item.name || "")}</strong><br><span style="color:var(--muted)">${escapeHtml(item.address || "")}</span></td>
+                <td><span class="pill ${escapeHtml(item.category || "")}">${escapeHtml(labelCategory(item.category || ""))}</span><br><span style="color:var(--muted)">${escapeHtml(item.sub_category || "")}</span></td>
+                <td>${escapeHtml(item.area || "")}</td>
+                <td>${escapeHtml(String(item.rating ?? "-"))}<br>${escapeHtml(priceText(item.price_per_person))}</td>
+                <td>${escapeHtml(item.gaode_typecode || "")}<br><span style="color:var(--muted)">${escapeHtml(item.gaode_type || "")}</span></td>
+                <td>${escapeHtml(String(item.photos_count || 0))} / ${item.tel_present ? "有电话" : "无电话"}</td>
+                <td>${escapeHtml(String(item.quality_score ?? "-"))}</td>
+              </tr>
+            `).join("")}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderCompare() {
+      const pois = state.mock.pois || [];
+      const poi = pois[Number($("compareSelect").value || 0)];
+      const raw = findRawMatch(poi);
+      $("mockJson").textContent = JSON.stringify(poi || {}, null, 2);
+      $("rawJson").textContent = JSON.stringify(raw || { message: "未找到同名高德 raw POI，可在 Raw 结构树里按请求批次查看。" }, null, 2);
+    }
+
+    function setupStaticMap() {
+      $("loadMap").addEventListener("click", () => {
+        const key = $("mapKey").value.trim();
+        if (!key) {
+          $("mapHint").textContent = "请输入高德 Web 服务 Key。Key 只用于本页生成静态地图图片请求，不会写入仓库文件。";
+          $("staticMap").style.display = "none";
+          return;
+        }
+        const dataset = $("mapDataset").value;
+        const pois = getMapPois(dataset).slice(0, 45);
+        if (!pois.length) {
+          $("mapHint").textContent = "当前数据集没有可用 POI。";
+          $("staticMap").style.display = "none";
+          return;
+        }
+        const url = buildStaticMapUrl(key, pois);
+        $("staticMap").src = url;
+        $("staticMap").style.display = "block";
+        $("mapHint").textContent = `已加载 ${pois.length} 个 marker。为控制 URL 长度，地图最多显示前 45 个 POI。`;
+      });
+    }
+
+    function getMapPois(dataset) {
+      if (dataset === "around") return (state.aroundMock && state.aroundMock.pois) || [];
+      if (dataset === "combined") return (state.combinedMock && state.combinedMock.pois) || [];
+      return (state.mock && state.mock.pois) || [];
+    }
+
+    function buildStaticMapUrl(key, pois) {
+      const groups = {};
+      pois.forEach(poi => {
+        const loc = poi.location || {};
+        if (typeof loc.lng !== "number" || typeof loc.lat !== "number") return;
+        const color = {
+          restaurant: "0x12B76A",
+          activity: "0x2E90FA",
+          walk_spot: "0x84CC16",
+          service: "0xF59E0B",
+          transport_anchor: "0xEC4899"
+        }[poi.category] || "0x667085";
+        groups[color] = groups[color] || [];
+        groups[color].push(`${loc.lng},${loc.lat}`);
+      });
+      const markers = Object.entries(groups)
+        .map(([color, points]) => `mid,${color},:${points.join(";")}`)
+        .join("|");
+      const params = new URLSearchParams({
+        size: "1024*520",
+        scale: "2",
+        markers,
+        key
+      });
+      return `https://restapi.amap.com/v3/staticmap?${params.toString()}`;
+    }
+
+    function findRawMatch(mockPoi) {
+      if (!mockPoi) return null;
+      return state.rawPois.find(raw => raw.name === mockPoi.name)
+        || state.rawPois.find(raw => String(raw.name || "").includes(mockPoi.name) || mockPoi.name.includes(String(raw.name || "")));
+    }
+
+    function setupTabs() {
+      Array.from(document.querySelectorAll(".tab-button")).forEach(button => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".tab-button").forEach(item => item.classList.remove("active"));
+          document.querySelectorAll(".view").forEach(item => item.classList.remove("active"));
+          button.classList.add("active");
+          $(button.dataset.view).classList.add("active");
+        });
+      });
+    }
+
+    function renderJsonTree(value, label) {
+      if (Array.isArray(value)) {
+        return `<details open><summary>${escapeHtml(label)} <span class="json-null">[${value.length}]</span></summary>${value.map((item, index) => renderJsonTree(item, String(index))).join("")}</details>`;
+      }
+      if (value && typeof value === "object") {
+        const keys = Object.keys(value);
+        return `<details open><summary><span class="json-key">${escapeHtml(label)}</span> <span class="json-null">{${keys.length}}</span></summary>${keys.map(key => renderJsonTree(value[key], key)).join("")}</details>`;
+      }
+      return `<div style="margin-left:14px;"><span class="json-key">${escapeHtml(label)}</span>: ${formatJsonScalar(value)}</div>`;
+    }
+
+    function formatJsonScalar(value) {
+      if (value === null) return `<span class="json-null">null</span>`;
+      if (typeof value === "string") return `<span class="json-string">"${escapeHtml(value)}"</span>`;
+      if (typeof value === "number") return `<span class="json-number">${value}</span>`;
+      if (typeof value === "boolean") return `<span class="json-bool">${value}</span>`;
+      return escapeHtml(String(value));
+    }
+
+    function countBy(items, key) {
+      return items.reduce((acc, item) => {
+        const value = item[key] || "unknown";
+        acc[value] = (acc[value] || 0) + 1;
+        return acc;
+      }, {});
+    }
+
+    function unique(values) {
+      return Array.from(new Set(values.filter(Boolean)));
+    }
+
+    function labelCategory(category) {
+      return CATEGORY_LABELS[category] || category || "unknown";
+    }
+
+    function priceText(value) {
+      return typeof value === "number" ? `￥${value}` : "-";
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function dotColor(category) {
+      return {
+        restaurant: "#12b76a",
+        activity: "#2e90fa",
+        walk_spot: "#84cc16",
+        service: "#f59e0b",
+        transport_anchor: "#ec4899"
+      }[category] || "#667085";
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    init();
+  </script>
+</body>
+</html>

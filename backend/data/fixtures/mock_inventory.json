@@ -1,0 +1,45 @@
+{
+  "version": "v0.1",
+  "restaurant_slots": [
+    {
+      "poi_id": "poi_gaode_restaurant_038_d1073c",
+      "slot_start": "2026-05-23T17:30:00+08:00",
+      "slot_end": "2026-05-23T22:00:00+08:00",
+      "base_tables": 10,
+      "reserved_tables": 6,
+      "max_party_size": 4,
+      "booking_available": true,
+      "queue_minutes": 8,
+      "source": "mock_inventory_fixture",
+      "mock_only": true,
+      "note": "纪念日长线约会 Demo：核心晚餐位保留可订余量。"
+    },
+    {
+      "poi_id": "poi_gaode_restaurant_293_4b4b83",
+      "slot_start": "2026-05-23T17:30:00+08:00",
+      "slot_end": "2026-05-23T22:00:00+08:00",
+      "base_tables": 8,
+      "reserved_tables": 5,
+      "max_party_size": 4,
+      "booking_available": true,
+      "queue_minutes": 10,
+      "source": "mock_inventory_fixture",
+      "mock_only": true,
+      "note": "同区域低压力备选餐厅 slot。"
+    },
+    {
+      "poi_id": "poi_gaode_restaurant_071_f4a36c",
+      "slot_start": "2026-05-23T17:30:00+08:00",
+      "slot_end": "2026-05-23T22:00:00+08:00",
+      "base_tables": 12,
+      "reserved_tables": 7,
+      "max_party_size": 6,
+      "booking_available": true,
+      "queue_minutes": 6,
+      "source": "mock_inventory_fixture",
+      "mock_only": true,
+      "note": "同区域低排队 PlanB slot。"
+    }
+  ],
+  "activity_slots": []
+}

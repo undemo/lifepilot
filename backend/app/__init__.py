@@ -1,0 +1,2 @@
+"""LifePilot FastAPI backend package."""
+

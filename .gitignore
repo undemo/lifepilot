@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+backend/.venv/
+
+# Node / Next.js
+node_modules/
+frontend/node_modules/
+.next/
+frontend/.next/
+*.tsbuildinfo
+frontend/test-results/
+
+# Local runtime output
+.codex_logs/
+reports/
+debug/
+
+# Backend mutable runtime stores
+backend/data/consensus.json
+backend/data/executions.json
+backend/data/feedback.json
+backend/data/idempotency.json
+backend/data/mock_idempotency_store.json
+backend/data/plans.json
+backend/data/traces.json
+backend/data/*.corrupt.*
+backend/data/*.tmp
+backend/data/runtime/
+
+# Data factory generated output
+tools/gaode_data_factory/output/
+tools/gaode_data_factory/reports/
+tools/qwen_data_factory/reports/
+tools/qwen_data_factory/staging/*
+!tools/qwen_data_factory/staging/.gitkeep
+tools/rule_evaluation/reports/

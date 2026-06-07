@@ -1,0 +1,1071 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LifePilot Benchmark Runner</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f6f5;
+        --panel: #ffffff;
+        --line: #d9e2df;
+        --text: #17211f;
+        --muted: #64716d;
+        --brand: #11866f;
+        --brand-dark: #0d6d5b;
+        --warn: #9b6a00;
+        --danger: #c33b32;
+        --soft: #eef3f1;
+        --shadow: 0 20px 50px rgba(25, 42, 37, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        letter-spacing: 0;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .shell {
+        width: min(1420px, calc(100vw - 32px));
+        margin: 24px auto 40px;
+        display: grid;
+        grid-template-columns: minmax(360px, 440px) minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      .left {
+        position: sticky;
+        top: 18px;
+        align-self: start;
+        max-height: calc(100vh - 36px);
+        overflow: auto;
+      }
+
+      .section {
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section:last-child {
+        border-bottom: 0;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        line-height: 1.25;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      h2 {
+        font-size: 17px;
+      }
+
+      h3 {
+        font-size: 15px;
+      }
+
+      p {
+        margin: 8px 0 0;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .small {
+        font-size: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .input,
+      .select,
+      .textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--text);
+        padding: 10px 11px;
+        outline: none;
+      }
+
+      .textarea {
+        min-height: 122px;
+        resize: vertical;
+        line-height: 1.55;
+      }
+
+      .input:focus,
+      .select:focus,
+      .textarea:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 3px rgba(17, 134, 111, 0.14);
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .row-between {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .button {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: var(--brand);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .button:hover {
+        background: var(--brand-dark);
+      }
+
+      .button.secondary {
+        background: var(--soft);
+        color: var(--text);
+        border: 1px solid var(--line);
+      }
+
+      .button.warn {
+        background: #fff7e5;
+        color: #7b5200;
+        border: 1px solid #f0d58d;
+      }
+
+      .button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .case-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .case-button {
+        text-align: left;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .case-button:hover {
+        border-color: var(--brand);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+        border-radius: 999px;
+        padding: 3px 9px;
+        background: #e7f4ef;
+        color: #08705d;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .badge.gray {
+        background: var(--soft);
+        color: var(--muted);
+      }
+
+      .badge.warn {
+        background: #fff3cf;
+        color: var(--warn);
+      }
+
+      .badge.danger {
+        background: #fdecea;
+        color: var(--danger);
+      }
+
+      .results {
+        display: grid;
+        gap: 16px;
+      }
+
+      .empty {
+        min-height: 300px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 40px;
+      }
+
+      .result-card {
+        overflow: hidden;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .timeline-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #fff;
+      }
+
+      .timeline-item.transport {
+        background: #f9fbfa;
+      }
+
+      .timeline-item p {
+        line-height: 1.55;
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .metric {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px;
+        background: #fff;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 4px;
+      }
+
+      .check-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .check {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 8px;
+        background: var(--soft);
+      }
+
+      .check.fail {
+        background: #fdecea;
+      }
+
+      .check.pass {
+        background: #e7f4ef;
+      }
+
+      .annotation {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .annotation textarea {
+        min-height: 88px;
+      }
+
+      details {
+        margin-top: 12px;
+      }
+
+      summary {
+        cursor: pointer;
+        color: var(--brand);
+        font-weight: 700;
+      }
+
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: #111917;
+        color: #eef7f4;
+        border-radius: 8px;
+        padding: 12px;
+        max-height: 420px;
+        overflow: auto;
+      }
+
+      .toast {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        background: #111917;
+        color: #fff;
+        padding: 10px 12px;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        display: none;
+        z-index: 10;
+      }
+
+      .toast.show {
+        display: block;
+      }
+
+      @media (max-width: 980px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .left {
+          position: static;
+          max-height: none;
+        }
+
+        .metric-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <aside class="panel left">
+        <section class="section">
+          <div class="row-between">
+            <div>
+              <h1>Benchmark Runner</h1>
+              <p class="muted small">LifePilot POI推荐自动化测试与人工批注</p>
+            </div>
+            <span class="badge">Mock</span>
+          </div>
+          <label class="field">
+            API Base
+            <input id="apiBase" class="input" value="http://127.0.0.1:8010/api/v1" />
+          </label>
+        </section>
+
+        <section class="section">
+          <h2>输入问题</h2>
+          <textarea id="question" class="textarea"></textarea>
+          <div class="grid-2">
+            <label class="field">
+              当前区域
+              <select id="area" class="select">
+                <option value="金沙湖">金沙湖</option>
+                <option value="下沙">下沙</option>
+                <option value="高教园区">高教园区</option>
+              </select>
+            </label>
+            <label class="field">
+              可规划时长
+              <select id="durationHours" class="select">
+                <option value="2">2小时</option>
+                <option value="3">3小时</option>
+                <option value="4" selected>4小时</option>
+                <option value="5">5小时</option>
+              </select>
+            </label>
+          </div>
+          <label class="field">
+            当前位置
+            <input id="locationLabel" class="input" value="杭州金沙湖地铁站" />
+          </label>
+          <label class="field">
+            当前时间
+            <input id="startTime" class="input" type="datetime-local" value="2026-05-23T10:00" />
+          </label>
+          <div class="actions">
+            <button id="runCurrent" class="button">运行当前问题</button>
+            <button id="runAll" class="button warn">一键测试</button>
+            <button id="clearResults" class="button secondary">清空结果</button>
+            <button id="exportNotes" class="button secondary">导出批注</button>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="row-between">
+            <h2>内置案例</h2>
+            <span id="caseCount" class="badge gray"></span>
+          </div>
+          <div id="caseList" class="case-list"></div>
+        </section>
+      </aside>
+
+      <section class="results" id="results">
+        <div class="panel empty">
+          <div>
+            <h2>暂无测试结果</h2>
+            <p class="muted">输入问题后点击“运行当前问题”，或点击“一键测试”跑完内置案例。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+      const BENCHMARK_CASES = [
+        {
+          id: "Q1",
+          title: "不开心，想喝点酒，十点前到家",
+          question: "我今天有点不开心,想找个地方喝点酒,晚上十点之前到家",
+          expected: {
+            includeAny: ["酒馆", "酒吧", "可小酌", "轻饮"],
+            notInclude: ["荟盈棋牌", "瑞幸咖啡(IN520店)", "瑞幸咖啡(海聚中心店)"],
+            firstPoiNotInclude: ["棋牌", "咖啡"]
+          }
+        },
+        {
+          id: "Q2",
+          title: "纪念日约会，轻松不夸张",
+          question: "今晚想给纪念日安排一段轻松一点的约会，不夸张，预算适中，路线别太折腾。",
+          expected: {
+            includeAny: ["约会", "纪念日", "轻仪式感", "不夸张"],
+            notInclude: ["米村拌饭", "福雷德广场", "麦当劳", "肯德基", "德克士", "老乡鸡", "棋牌"],
+            noDuplicatePoiTitles: true
+          }
+        }
+      ];
+
+      const state = {
+        results: [],
+        running: false
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      function init() {
+        $("question").value = BENCHMARK_CASES[0].question;
+        $("caseCount").textContent = `${BENCHMARK_CASES.length} cases`;
+        renderCases();
+        bindEvents();
+      }
+
+      function bindEvents() {
+        $("runCurrent").addEventListener("click", () => {
+          const question = $("question").value.trim();
+          const matchedCase = BENCHMARK_CASES.find((item) => item.question === question);
+          const customCase = matchedCase || {
+            id: `CUSTOM_${Date.now()}`,
+            title: "手动输入",
+            question,
+            expected: {}
+          };
+          void runCase(customCase);
+        });
+        $("runAll").addEventListener("click", runAll);
+        $("clearResults").addEventListener("click", () => {
+          state.results = [];
+          renderResults();
+        });
+        $("exportNotes").addEventListener("click", exportAnnotations);
+      }
+
+      function renderCases() {
+        $("caseList").innerHTML = BENCHMARK_CASES.map(
+          (item) => `
+            <button class="case-button" data-case-id="${item.id}">
+              <div class="row-between">
+                <strong>${escapeHtml(item.id)} · ${escapeHtml(item.title)}</strong>
+                <span class="badge gray">载入</span>
+              </div>
+              <p class="muted small">${escapeHtml(item.question)}</p>
+            </button>
+          `
+        ).join("");
+        document.querySelectorAll("[data-case-id]").forEach((node) => {
+          node.addEventListener("click", () => {
+            const item = BENCHMARK_CASES.find((caseItem) => caseItem.id === node.dataset.caseId);
+            if (!item) return;
+            $("question").value = item.question;
+            toast(`已载入 ${item.id}`);
+          });
+        });
+      }
+
+      async function runAll() {
+        if (state.running) return;
+        state.results = [];
+        renderResults();
+        for (const item of BENCHMARK_CASES) {
+          await runCase(item, { append: true });
+        }
+      }
+
+      async function runCase(testCase, options = {}) {
+        const question = testCase.question.trim();
+        if (!question) {
+          toast("请先输入问题");
+          return;
+        }
+        setRunning(true);
+        const startedAt = new Date().toISOString();
+        const placeholder = {
+          id: `${testCase.id}_${Date.now()}`,
+          caseId: testCase.id,
+          title: testCase.title,
+          question,
+          startedAt,
+          loading: true
+        };
+        if (options.append) {
+          state.results.unshift(placeholder);
+        } else {
+          state.results.unshift(placeholder);
+        }
+        renderResults();
+        try {
+          const response = await createPlan(question, testCase.id);
+          const plan = response.data && response.data.plan_contract ? response.data.plan_contract : response.data;
+          const checks = evaluatePlan(plan, testCase.expected || {});
+          Object.assign(placeholder, {
+            loading: false,
+            response,
+            plan,
+            checks,
+            finishedAt: new Date().toISOString(),
+            error: null
+          });
+        } catch (error) {
+          Object.assign(placeholder, {
+            loading: false,
+            error: error.message || String(error),
+            finishedAt: new Date().toISOString()
+          });
+        } finally {
+          setRunning(false);
+          renderResults();
+        }
+      }
+
+      async function createPlan(question, caseId) {
+        const apiBase = $("apiBase").value.trim().replace(/\/$/, "");
+        const startTime = $("startTime").value;
+        const durationHours = Number($("durationHours").value || 4);
+        const traceId = `trace_benchmark_${caseId}_${Date.now()}`;
+        const idempotencyKey = `idem_benchmark_${caseId}_${Date.now()}`;
+        const body = {
+          input_text: question,
+          use_memory: false,
+          debug: false,
+          user_location: {
+            label: $("locationLabel").value.trim() || `杭州${$("area").value}`,
+            area: $("area").value
+          },
+          preferred_start_time: toShanghaiIso(startTime),
+          preferred_end_time: toShanghaiIso(addHours(startTime, durationHours))
+        };
+        const raw = await fetch(`${apiBase}/plans/create`, {
+          method: "POST",
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "X-Trace-Id": traceId,
+            "X-Idempotency-Key": idempotencyKey,
+            "X-Demo-User-Id": "benchmark_user"
+          },
+          body: JSON.stringify(body)
+        });
+        const parsed = await raw.json().catch(() => null);
+        if (!raw.ok || !parsed || parsed.success !== true) {
+          const message = parsed && parsed.error ? parsed.error.user_message || parsed.error.message : `HTTP ${raw.status}`;
+          throw new Error(message);
+        }
+        return parsed;
+      }
+
+      function renderResults() {
+        if (!state.results.length) {
+          $("results").innerHTML = `
+            <div class="panel empty">
+              <div>
+                <h2>暂无测试结果</h2>
+                <p class="muted">输入问题后点击“运行当前问题”，或点击“一键测试”跑完内置案例。</p>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        $("results").innerHTML = state.results.map(renderResult).join("");
+        bindAnnotationEvents();
+      }
+
+      function renderResult(result) {
+        const plan = result.plan;
+        const allPass = result.checks && result.checks.length ? result.checks.every((item) => item.pass) : null;
+        const saved = loadAnnotation(result);
+        if (result.loading) {
+          return `
+            <article class="panel result-card">
+              <section class="section">
+                <div class="row-between">
+                  <div>
+                    <h2>${escapeHtml(result.caseId)} · ${escapeHtml(result.title)}</h2>
+                    <p class="muted">${escapeHtml(result.question)}</p>
+                  </div>
+                  <span class="badge warn">运行中</span>
+                </div>
+              </section>
+            </article>
+          `;
+        }
+        if (result.error) {
+          return `
+            <article class="panel result-card">
+              <section class="section">
+                <div class="row-between">
+                  <div>
+                    <h2>${escapeHtml(result.caseId)} · ${escapeHtml(result.title)}</h2>
+                    <p class="muted">${escapeHtml(result.question)}</p>
+                  </div>
+                  <span class="badge danger">失败</span>
+                </div>
+                <p class="muted">${escapeHtml(result.error)}</p>
+              </section>
+            </article>
+          `;
+        }
+        return `
+          <article class="panel result-card">
+            <section class="section">
+              <div class="row-between">
+                <div>
+                  <h2>${escapeHtml(result.caseId)} · ${escapeHtml(result.title)}</h2>
+                  <p class="muted">${escapeHtml(result.question)}</p>
+                </div>
+                <span class="badge ${allPass ? "" : "danger"}">${allPass ? "自动检查通过" : "需人工复核"}</span>
+              </div>
+              ${renderMetrics(plan)}
+              ${renderChecks(result.checks || [])}
+            </section>
+            <section class="section">
+              ${renderPlan(plan)}
+            </section>
+            <section class="section">
+              <h3>人工批注</h3>
+              <div class="annotation" data-annotation-id="${annotationId(result)}">
+                <div class="grid-2">
+                  <label class="field">
+                    人工结论
+                    <select class="select js-verdict">
+                      <option value="">未标注</option>
+                      <option value="pass" ${saved.verdict === "pass" ? "selected" : ""}>通过</option>
+                      <option value="needs_improvement" ${saved.verdict === "needs_improvement" ? "selected" : ""}>需优化</option>
+                      <option value="fail" ${saved.verdict === "fail" ? "selected" : ""}>失败</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    评分
+                    <select class="select js-score">
+                      <option value="">未评分</option>
+                      ${[1, 2, 3, 4, 5].map((value) => `<option value="${value}" ${String(saved.score) === String(value) ? "selected" : ""}>${value} / 5</option>`).join("")}
+                    </select>
+                  </label>
+                </div>
+                <textarea class="textarea js-note" placeholder="手动批注：哪里不自然、哪里该惩罚、哪些POI更合适...">${escapeHtml(saved.note || "")}</textarea>
+                <button class="button secondary js-save-note">保存批注</button>
+              </div>
+              <details>
+                <summary>查看原始JSON</summary>
+                <pre>${escapeHtml(JSON.stringify(result.response, null, 2))}</pre>
+              </details>
+            </section>
+          </article>
+        `;
+      }
+
+      function renderMetrics(plan) {
+        if (!plan) return "";
+        return `
+          <div class="metric-grid">
+            <div class="metric"><span class="muted small">状态</span><strong>${escapeHtml(statusLabel(plan.status))}</strong></div>
+            <div class="metric"><span class="muted small">Verifier</span><strong>${escapeHtml(statusLabel(plan.verifier_result && plan.verifier_result.status))}</strong></div>
+            <div class="metric"><span class="muted small">预算</span><strong>${formatMoney(plan.budget && plan.budget.estimated_total)}</strong></div>
+            <div class="metric"><span class="muted small">Trace</span><strong class="small">${escapeHtml(plan.trace_id || "-")}</strong></div>
+          </div>
+        `;
+      }
+
+      function renderChecks(checks) {
+        if (!checks.length) return "";
+        return `
+          <div class="check-list">
+            ${checks.map((check) => `
+              <div class="check ${check.pass ? "pass" : "fail"}">
+                <span>${check.pass ? "✓" : "!"}</span>
+                <div>
+                  <strong>${escapeHtml(check.title)}</strong>
+                  <p class="muted small">${escapeHtml(check.detail)}</p>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function renderPlan(plan) {
+        if (!plan) return "<p class=\"muted\">无PlanContract。</p>";
+        return `
+          <div class="row-between">
+            <h3>目标理解</h3>
+            <span class="badge">${escapeHtml(statusLabel(plan.status))}</span>
+          </div>
+          <p>${escapeHtml(plan.user_goal && plan.user_goal.goal_summary ? plan.user_goal.goal_summary : "已生成计划。")}</p>
+          <div class="row" style="margin-top:10px">
+            <span class="badge gray">${escapeHtml((plan.constraints && plan.constraints.party_size) || 1)}人</span>
+            ${plan.constraints && plan.constraints.budget_max ? `<span class="badge gray">预算${formatMoney(plan.constraints.budget_max)}</span>` : ""}
+            ${plan.constraints && plan.constraints.queue_tolerance ? `<span class="badge gray">排队${escapeHtml(statusLabel(plan.constraints.queue_tolerance))}</span>` : ""}
+          </div>
+          <h3 style="margin-top:18px">时间线</h3>
+          <div class="timeline">${(plan.timeline || []).map(renderTimelineStep).join("")}</div>
+          ${renderRoutes(plan)}
+          ${renderBudget(plan)}
+          ${renderRisks(plan)}
+        `;
+      }
+
+      function renderTimelineStep(step) {
+        const isTransport = step.type === "transport";
+        const tags = (step.display_tags || []).slice(0, 6);
+        return `
+          <div class="timeline-item ${isTransport ? "transport" : ""}">
+            <div class="row-between">
+              <strong>${escapeHtml(step.title || "节点")}</strong>
+              <span class="muted small">${formatClock(step.start_time)} - ${formatClock(step.end_time)}</span>
+            </div>
+            ${step.description ? `<p class="muted">${escapeHtml(step.description)}</p>` : ""}
+            <div class="row" style="margin-top:8px">
+              ${tags.map((tag) => `<span class="badge gray">${escapeHtml(tagLabel(tag))}</span>`).join("")}
+              ${step.booking_required ? `<span class="badge warn">需要模拟预约</span>` : ""}
+              ${step.reservation_required ? `<span class="badge warn">需要模拟订座</span>` : ""}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderRoutes(plan) {
+        const poiName = new Map();
+        (plan.timeline || []).forEach((step) => {
+          if (step.poi_id) poiName.set(step.poi_id, step.title);
+        });
+        const routes = (plan.timeline || []).filter((step) => step.type === "transport" && step.estimated_route);
+        if (!routes.length) return "";
+        return `
+          <h3 style="margin-top:18px">路线与转场</h3>
+          <div class="timeline">
+            ${routes.map((step) => {
+              const route = step.estimated_route || {};
+              const from = poiName.get(step.from_poi_id) || step.from_poi_id || "起点";
+              const to = poiName.get(step.to_poi_id) || step.to_poi_id || "终点";
+              return `
+                <div class="timeline-item transport">
+                  <div class="row-between">
+                    <strong>${escapeHtml(from)} → ${escapeHtml(to)}</strong>
+                    <span class="badge gray">${route.traffic_level === "smooth" ? "通畅" : "模拟路况"}</span>
+                  </div>
+                  <p class="muted">${escapeHtml(route.route_summary || `约${route.duration_minutes || step.duration_minutes || "-"}分钟，路线来自模拟估算`)}</p>
+                  ${typeof route.distance_km === "number" ? `<p class="muted small">距离约${route.distance_km.toFixed(1)}km</p>` : ""}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `;
+      }
+
+      function renderBudget(plan) {
+        const budget = plan.budget || {};
+        return `
+          <h3 style="margin-top:18px">预算</h3>
+          <div class="metric-grid">
+            <div class="metric"><span class="muted small">总预算</span><strong>${formatMoney(budget.estimated_total)}</strong></div>
+            <div class="metric"><span class="muted small">人均/单人</span><strong>${formatMoney(budget.price_per_person)}</strong></div>
+          </div>
+          ${(budget.items || []).map((item) => `
+            <div class="row-between" style="margin-top:8px">
+              <span class="muted">${escapeHtml(item.name || "预算项")}</span>
+              <strong>${formatMoney(item.amount)}</strong>
+            </div>
+          `).join("")}
+        `;
+      }
+
+      function renderRisks(plan) {
+        const risks = (plan.risks || []).filter((item) => item.user_visible !== false);
+        if (!risks.length) return "";
+        return `
+          <h3 style="margin-top:18px">风险提醒</h3>
+          <div class="timeline">
+            ${risks.map((risk) => `
+              <div class="timeline-item">
+                <span class="badge warn">${escapeHtml(statusLabel(risk.level))}</span>
+                <p class="muted">${escapeHtml(risk.description || risk.message || "存在可恢复风险。")}</p>
+                ${risk.mitigation ? `<p class="muted small">${escapeHtml(risk.mitigation)}</p>` : ""}
+              </div>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      function evaluatePlan(plan, expected) {
+        const checks = [];
+        const text = flattenPlanText(plan);
+        if (expected.includeAny && expected.includeAny.length) {
+          const matched = expected.includeAny.filter((token) => text.includes(token));
+          checks.push({
+            title: "必须命中至少一个关键意图词",
+            pass: matched.length > 0,
+            detail: matched.length ? `已命中：${matched.join("、")}` : `未命中：${expected.includeAny.join("、")}`
+          });
+        }
+        if (expected.notInclude && expected.notInclude.length) {
+          const hit = expected.notInclude.filter((token) => text.includes(token));
+          checks.push({
+            title: "不应出现已知退化POI/词",
+            pass: hit.length === 0,
+            detail: hit.length ? `命中退化项：${hit.join("、")}` : "未命中退化项"
+          });
+        }
+        if (expected.firstPoiNotInclude && expected.firstPoiNotInclude.length) {
+          const first = firstPoiTitle(plan);
+          const hit = expected.firstPoiNotInclude.filter((token) => first.includes(token));
+          checks.push({
+            title: "首个POI不应退回低质替代",
+            pass: hit.length === 0,
+            detail: first ? `首个POI：${first}` : "没有找到首个POI"
+          });
+        }
+        if (expected.noDuplicatePoiTitles) {
+          const titles = poiTitles(plan);
+          const duplicates = titles.filter((title, index) => titles.indexOf(title) !== index);
+          checks.push({
+            title: "POI节点不应重复",
+            pass: duplicates.length === 0,
+            detail: duplicates.length ? `重复：${[...new Set(duplicates)].join("、")}` : "没有重复POI标题"
+          });
+        }
+        return checks;
+      }
+
+      function bindAnnotationEvents() {
+        document.querySelectorAll(".annotation").forEach((node) => {
+          const save = node.querySelector(".js-save-note");
+          if (!save) return;
+          save.addEventListener("click", () => {
+            const payload = {
+              verdict: node.querySelector(".js-verdict").value,
+              score: node.querySelector(".js-score").value,
+              note: node.querySelector(".js-note").value,
+              updated_at: new Date().toISOString()
+            };
+            localStorage.setItem(`lifepilot_benchmark_note:${node.dataset.annotationId}`, JSON.stringify(payload));
+            toast("批注已保存");
+          });
+        });
+      }
+
+      function exportAnnotations() {
+        const annotations = {};
+        for (let index = 0; index < localStorage.length; index += 1) {
+          const key = localStorage.key(index);
+          if (!key || !key.startsWith("lifepilot_benchmark_note:")) continue;
+          annotations[key.replace("lifepilot_benchmark_note:", "")] = JSON.parse(localStorage.getItem(key) || "{}");
+        }
+        const payload = {
+          exported_at: new Date().toISOString(),
+          api_base: $("apiBase").value.trim(),
+          annotations
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `lifepilot-benchmark-annotations-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function loadAnnotation(result) {
+        try {
+          return JSON.parse(localStorage.getItem(`lifepilot_benchmark_note:${annotationId(result)}`) || "{}");
+        } catch {
+          return {};
+        }
+      }
+
+      function annotationId(result) {
+        const planId = result.plan && result.plan.plan_id ? result.plan.plan_id : result.id;
+        return `${result.caseId}:${planId}`;
+      }
+
+      function setRunning(value) {
+        state.running = value;
+        $("runCurrent").disabled = value;
+        $("runAll").disabled = value;
+      }
+
+      function flattenPlanText(plan) {
+        if (!plan) return "";
+        return [
+          plan.user_goal && plan.user_goal.goal_summary,
+          ...(plan.timeline || []).flatMap((step) => [step.title, step.description, ...(step.display_tags || [])]),
+          ...(plan.budget && plan.budget.items ? plan.budget.items.map((item) => item.name) : [])
+        ].filter(Boolean).join(" ");
+      }
+
+      function firstPoiTitle(plan) {
+        const step = (plan && plan.timeline || []).find((item) => item.type !== "transport");
+        return step ? step.title || "" : "";
+      }
+
+      function poiTitles(plan) {
+        return (plan && plan.timeline || []).filter((item) => item.type !== "transport").map((item) => item.title).filter(Boolean);
+      }
+
+      function formatClock(value) {
+        if (!value) return "待定";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+      }
+
+      function formatMoney(value, currency = "CNY") {
+        if (typeof value !== "number") return "待估";
+        return `${currency === "CNY" ? "¥" : `${currency} `}${Math.round(value)}`;
+      }
+
+      function statusLabel(status) {
+        const map = {
+          executable: "可执行",
+          confirmed: "已确认",
+          completed: "已完成",
+          recovered: "已恢复",
+          failed: "失败",
+          pass: "通过",
+          warning: "有提醒",
+          pending: "待执行",
+          running: "执行中",
+          success: "成功",
+          skipped: "已跳过",
+          finalized: "已生成共识",
+          collecting: "收集中",
+          verified: "已验证",
+          low: "低",
+          medium_low: "较低",
+          medium: "中",
+          high: "高",
+          blocking: "阻断"
+        };
+        return status ? map[status] || status : "待确认";
+      }
+
+      function tagLabel(tag) {
+        const map = {
+          alcohol: "可小酌",
+          light_drink: "轻饮",
+          music: "有音乐",
+          acoustic_music: "轻音乐",
+          date_friendly: "适合约会",
+          proper_dining: "正式用餐",
+          quiet_stay: "安静停留",
+          theater: "观影/剧场",
+          nearby: "短转场",
+          indoor: "室内可去",
+          rain_safe: "雨天可去"
+        };
+        return map[tag] || tag;
+      }
+
+      function toShanghaiIso(value) {
+        if (!value) return undefined;
+        const withSeconds = value.length === 16 ? `${value}:00` : value;
+        return `${withSeconds}+08:00`;
+      }
+
+      function addHours(value, hours) {
+        const date = new Date(`${value}:00+08:00`);
+        date.setHours(date.getHours() + hours);
+        const shanghai = new Date(date.getTime() + 8 * 60 * 60 * 1000);
+        return shanghai.toISOString().slice(0, 16);
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[char]);
+      }
+
+      function toast(message) {
+        const node = $("toast");
+        node.textContent = message;
+        node.classList.add("show");
+        window.clearTimeout(node._timer);
+        node._timer = window.setTimeout(() => node.classList.remove("show"), 1800);
+      }
+
+      init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LifePilot Mock Data Factory</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f3f5f7;
+        --panel: #ffffff;
+        --text: #172033;
+        --muted: #667085;
+        --line: #d8dee8;
+        --accent: #0f766e;
+        --accent-soft: #e6f4f1;
+        --danger: #b42318;
+        --shadow: 0 14px 36px rgba(17, 24, 39, 0.08);
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); }
+      header { padding: 22px 24px 16px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #ffffff 0%, #f8fbfb 100%); }
+      .header-inner { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; gap: 16px; align-items: end; }
+      h1 { margin: 0 0 6px; font-size: 24px; letter-spacing: 0; }
+      .sub { color: var(--muted); font-size: 13px; line-height: 1.6; }
+      main { max-width: 1280px; margin: 0 auto; padding: 18px; }
+      .toolbar, .stats, .table-wrap, .file-info { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); }
+      .toolbar { display: grid; grid-template-columns: repeat(5, minmax(120px, 1fr)) auto auto; gap: 10px; padding: 12px; align-items: end; }
+      .refresh-line { display: flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-size: 12px; margin: 10px 2px 0; }
+      .file-info { padding: 16px; margin-bottom: 14px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: start; }
+      .file-info h2 { margin: 0 0 7px; font-size: 18px; letter-spacing: 0; }
+      .file-info p { margin: 0; color: var(--muted); line-height: 1.65; font-size: 14px; max-width: 840px; }
+      .owner { align-self: center; color: var(--accent); background: var(--accent-soft); border: 1px solid #b9ded8; border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+      .checks { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+      label { display: grid; gap: 5px; color: var(--muted); font-size: 12px; }
+      input, select, button { min-height: 36px; border: 1px solid var(--line); border-radius: 6px; padding: 0 10px; background: #fff; color: var(--text); font-size: 14px; }
+      input:focus, select:focus, button:focus { outline: 2px solid #99d2cb; outline-offset: 1px; }
+      button { cursor: pointer; font-weight: 600; }
+      button.primary { color: #fff; border-color: var(--accent); background: var(--accent); }
+      button.secondary { color: var(--accent); border-color: #b9ded8; background: var(--accent-soft); }
+      button.danger { color: var(--danger); border-color: #f1b8b2; background: #fff8f7; }
+      .stats { display: flex; gap: 10px; flex-wrap: wrap; padding: 12px; margin: 14px 0; }
+      .stat { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-width: 150px; background: #fbfcfd; }
+      .stat b { display: block; font-size: 18px; }
+      .stat span { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+      .table-wrap { overflow: auto; }
+      table { width: 100%; border-collapse: collapse; min-width: 980px; }
+      th, td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: 13px; }
+      th { position: sticky; top: 0; background: #eef3f5; color: #344054; z-index: 1; }
+      code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+      .pill { display: inline-flex; align-items: center; min-height: 22px; padding: 0 8px; border: 1px solid var(--line); border-radius: 999px; margin: 0 4px 4px 0; color: #344054; background: #f8fafc; }
+      .empty { padding: 32px; color: var(--muted); text-align: center; }
+      details pre { white-space: pre-wrap; max-width: 520px; overflow: auto; background: #f8fafc; border: 1px solid var(--line); border-radius: 6px; padding: 8px; }
+      @media (max-width: 760px) {
+        main { padding: 10px; }
+        .toolbar { grid-template-columns: 1fr 1fr; }
+        .toolbar button { width: 100%; }
+        header { padding: 16px; }
+        .header-inner, .file-info { display: block; }
+        .owner { display: inline-flex; margin-top: 10px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <div>
+          <h1>LifePilot Mock Data Factory</h1>
+          <div class="sub">开发工具页：展示、筛选、校验和删除 backend/data 中的 Mock 数据。</div>
+        </div>
+        <div class="sub">杭州下沙 / 金沙湖 / 高教园区</div>
+      </div>
+    </header>
+    <main>
+      <section class="file-info" id="fileInfo"></section>
+      <section class="toolbar">
+        <label>文件
+          <select id="file"><option value="">全部</option></select>
+        </label>
+        <label>场景
+          <select id="scenario">
+            <option value="">全部</option>
+            <option value="family_parent_child">家庭亲子</option>
+            <option value="friend_group">朋友局</option>
+            <option value="anniversary_emotion">纪念日</option>
+          </select>
+        </label>
+        <label>类别
+          <select id="category">
+            <option value="">全部</option>
+            <option value="activity">activity</option>
+            <option value="restaurant">restaurant</option>
+            <option value="walk_spot">walk_spot</option>
+            <option value="service">service</option>
+            <option value="transport_anchor">transport_anchor</option>
+          </select>
+        </label>
+        <label>区域
+          <select id="area">
+            <option value="">全部</option>
+            <option value="下沙">下沙</option>
+            <option value="金沙湖">金沙湖</option>
+            <option value="高教园区">高教园区</option>
+          </select>
+        </label>
+        <label>搜索
+          <input id="q" placeholder="名称 / ID / 标签" />
+        </label>
+        <button class="secondary" id="refresh">刷新状态</button>
+        <button class="primary" id="validate">运行校验</button>
+      </section>
+      <div class="refresh-line">
+        <span id="refreshState">尚未刷新</span>
+        <span id="dataDir"></span>
+      </div>
+      <section class="stats" id="stats"></section>
+      <section class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>文件</th>
+              <th>ID</th>
+              <th>名称</th>
+              <th>类别/区域</th>
+              <th>场景</th>
+              <th>状态</th>
+              <th>详情</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div id="empty" class="empty" hidden>没有匹配的数据。</div>
+      </section>
+    </main>
+    <script>
+      const state = { files: [], fileMeta: {}, items: [], counts: {}, loadedAt: null, dataDir: "" };
+      const $ = (id) => document.getElementById(id);
+      const controls = ["file", "scenario", "category", "area", "q"];
+      controls.forEach((id) => $(id).addEventListener("input", load));
+      $("refresh").addEventListener("click", () => load({ manual: true }));
+      $("validate").addEventListener("click", async () => {
+        const res = await fetch("/factory/api/validate", { method: "POST" }).then((r) => r.json());
+        alert(res.success ? "校验通过" : "校验失败，查看 tools/qwen_data_factory/reports/validate_mock_data_report.json");
+      });
+      async function load(options = {}) {
+        const params = new URLSearchParams();
+        controls.forEach((id) => { if ($(id).value) params.set(id, $(id).value); });
+        $("refresh").disabled = true;
+        $("refreshState").textContent = options.manual ? "正在刷新..." : "正在读取数据...";
+        const res = await fetch(`/factory/api/data?${params}`).then((r) => r.json());
+        state.files = res.files || [];
+        state.fileMeta = res.file_meta || {};
+        state.items = res.items || [];
+        state.counts = res.counts || {};
+        state.loadedAt = res.loaded_at || new Date().toISOString();
+        state.dataDir = res.data_dir || "";
+        renderFiles();
+        renderFileInfo();
+        renderStats();
+        renderRows();
+        renderRefreshState();
+        $("refresh").disabled = false;
+      }
+      function renderFiles() {
+        const selected = $("file").value;
+        if ($("file").options.length <= 1) {
+          state.files.forEach((file) => {
+            const opt = document.createElement("option");
+            opt.value = file;
+            opt.textContent = file;
+            $("file").appendChild(opt);
+          });
+        }
+        $("file").value = selected;
+      }
+      function renderFileInfo() {
+        const selected = $("file").value;
+        const activeFiles = selected ? [selected] : state.files;
+        const meta = selected ? state.fileMeta[selected] : {
+          title: "Mock数据总览",
+          description: "选择一个文件后，这里会显示它在LifePilot数据生成流水线中的职责、读取模块和关键校验点。当前列表展示所有文件的合并视图。",
+          owner: "Qwen Data Factory",
+          checks: ["Qwen只生成候选JSON", "写入前必须经过validator", "普通用户页不展示Debug失败细节"]
+        };
+        const counts = activeFiles.map((file) => `${file}: ${state.counts[file] || 0}`).join(" / ");
+        $("fileInfo").innerHTML = `
+          <div>
+            <h2>${escapeHtml(meta.title)}</h2>
+            <p>${escapeHtml(meta.description)}</p>
+          </div>
+          <div class="owner">${escapeHtml(meta.owner)}</div>
+          <div class="checks">
+            ${(meta.checks || []).map((item) => `<span class="pill">${escapeHtml(item)}</span>`).join("")}
+            <span class="pill">${escapeHtml(counts)}</span>
+          </div>
+        `;
+      }
+      function renderStats() {
+        $("stats").innerHTML = Object.entries(state.counts).map(([file, count]) => `<div class="stat"><b>${count}</b><span>${file}</span></div>`).join("");
+      }
+      function renderRefreshState() {
+        const time = new Date(state.loadedAt);
+        $("refreshState").textContent = `最后刷新：${Number.isNaN(time.getTime()) ? state.loadedAt : time.toLocaleString("zh-CN", { hour12: false })}`;
+        $("dataDir").textContent = state.dataDir ? `数据目录：${state.dataDir}` : "";
+      }
+      function renderRows() {
+        $("empty").hidden = state.items.length > 0;
+        $("tbody").innerHTML = state.items.map((item) => `
+          <tr>
+            <td><code>${escapeHtml(item.file)}</code></td>
+            <td><code>${escapeHtml(item.id || "")}</code></td>
+            <td>${escapeHtml(item.name || "")}${item.mock ? ' <span class="pill">Mock</span>' : ""}</td>
+            <td>${escapeHtml(item.category || "")}<br><span class="pill">${escapeHtml(item.area || "")}</span></td>
+            <td>${(item.scenarios || []).map((s) => `<span class="pill">${escapeHtml(s || "")}</span>`).join("")}</td>
+            <td>${escapeHtml(item.status || "")}</td>
+            <td><details><summary>JSON</summary><pre>${escapeHtml(JSON.stringify(item.record, null, 2))}</pre></details></td>
+            <td><button class="danger" data-file="${escapeHtml(item.file)}" data-id="${escapeHtml(item.id || "")}">删除</button></td>
+          </tr>
+        `).join("");
+        document.querySelectorAll("button[data-file]").forEach((button) => button.addEventListener("click", removeItem));
+      }
+      async function removeItem(event) {
+        const file = event.target.dataset.file;
+        const id = event.target.dataset.id;
+        if (!file || !id || !confirm(`删除 ${file} / ${id} ?`)) return;
+        await fetch(`/factory/api/items?file=${encodeURIComponent(file)}&id=${encodeURIComponent(id)}`, { method: "DELETE" });
+        load();
+      }
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[ch]));
+      }
+      load();
+    </script>
+  </body>
+</html>

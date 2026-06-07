@@ -1,0 +1,659 @@
+{
+  "version": "poi_food_attributes.v1",
+  "items": {
+    "poi_gaode_restaurant_260_f3dfb0": {
+      "semantic_tags": ["crayfish", "seafood", "family_dining", "reservation_supported"],
+      "menu_features": {
+        "signature_dishes": ["十三香小龙虾", "蒜蓉小龙虾", "儿童不辣虾仁饭"],
+        "dish_ids": ["DISH_CRAYFISH", "DISH_SEAFOOD"],
+        "parent_categories": ["CRAYFISH", "SEAFOOD"],
+        "raw_food_terms": ["小龙虾", "虾尾", "蒜蓉小龙虾"],
+        "ingredients": ["小龙虾", "虾"],
+        "cooking_methods": ["炒", "煮"],
+        "flavors": ["十三香", "蒜香", "辣"],
+        "forms": ["夜宵", "正餐"],
+        "scenes": ["朋友聚餐", "夜市", "亲子"],
+        "has_crayfish": true,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.75,
+        "oiliness_level": 0.72,
+        "healthy_option_score": 0.35
+      },
+      "family_features": {
+        "family_friendly_score": 0.62,
+        "child_food_score": 0.58,
+        "has_child_chair": true,
+        "has_restroom": true,
+        "noise_level": 0.62
+      },
+      "queue_features": {
+        "queue_risk": 0.55,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 22,
+        "avg_wait_minutes_offpeak": 8
+      },
+      "addon_features": ["湿巾", "解辣饮品", "儿童不辣菜"]
+    },
+    "poi_gaode_restaurant_055_50bc27": {
+      "semantic_tags": ["hotpot", "family_dining", "reservation_supported"],
+      "menu_features": {
+        "signature_dishes": ["毛肚火锅", "菌汤锅", "儿童不辣涮菜"],
+        "dish_ids": ["DISH_HOTPOT"],
+        "parent_categories": ["HOTPOT"],
+        "raw_food_terms": ["火锅", "清汤锅", "毛肚"],
+        "ingredients": ["牛肉", "毛肚", "蔬菜"],
+        "cooking_methods": ["涮", "煮"],
+        "flavors": ["麻辣", "清汤"],
+        "forms": ["火锅", "正餐"],
+        "scenes": ["亲子", "朋友聚餐"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": true,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.65,
+        "oiliness_level": 0.68,
+        "healthy_option_score": 0.42
+      },
+      "family_features": {
+        "family_friendly_score": 0.72,
+        "child_food_score": 0.68,
+        "has_child_chair": true,
+        "has_restroom": true,
+        "noise_level": 0.58
+      },
+      "queue_features": {
+        "queue_risk": 0.48,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 18,
+        "avg_wait_minutes_offpeak": 6
+      },
+      "addon_features": ["围裙", "清汤锅", "儿童餐具"]
+    },
+    "poi_gaode_restaurant_070_3846e8": {
+      "semantic_tags": ["hotpot", "delivery_friendly", "family_dining"],
+      "menu_features": {
+        "signature_dishes": ["清汤番茄锅", "儿童不辣涮菜", "虾滑"],
+        "dish_ids": ["DISH_HOTPOT", "DISH_CHILD_FRIENDLY_FOOD"],
+        "parent_categories": ["HOTPOT", "CHILD_FRIENDLY"],
+        "raw_food_terms": ["火锅", "清汤锅", "番茄锅"],
+        "ingredients": ["牛肉", "虾", "蔬菜"],
+        "cooking_methods": ["涮", "煮"],
+        "flavors": ["清淡", "番茄"],
+        "forms": ["火锅", "正餐"],
+        "scenes": ["亲子", "家庭聚餐"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": true,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.35,
+        "oiliness_level": 0.52,
+        "healthy_option_score": 0.55
+      },
+      "family_features": {
+        "family_friendly_score": 0.78,
+        "child_food_score": 0.75,
+        "has_child_chair": true,
+        "has_restroom": true,
+        "noise_level": 0.5
+      },
+      "queue_features": {
+        "queue_risk": 0.38,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 15,
+        "avg_wait_minutes_offpeak": 4
+      },
+      "addon_features": ["清汤锅", "儿童餐具", "解辣饮品"]
+    },
+    "poi_gaode_restaurant_002_7a101a": {
+      "semantic_tags": ["bbq", "creative_food", "charcoal_grill", "reservation_supported"],
+      "menu_features": {
+        "signature_dishes": ["碳烤菠萝", "烤羊肉串", "烤鸡翅"],
+        "dish_ids": ["DISH_BBQ", "DISH_LAMB"],
+        "parent_categories": ["BBQ", "LAMB", "LONG_TAIL_SNACK"],
+        "raw_food_terms": ["碳烤菠萝", "炭烤菠萝", "烤串", "烧烤"],
+        "ingredients": ["菠萝", "羊肉", "鸡翅"],
+        "cooking_methods": ["炭烤", "碳烤", "烧烤"],
+        "flavors": ["孜然", "酸甜"],
+        "forms": ["烤物", "小吃", "夜宵"],
+        "scenes": ["夜市", "朋友聚餐", "创意小吃"],
+        "has_crayfish": false,
+        "has_bbq": true,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.5,
+        "oiliness_level": 0.7,
+        "healthy_option_score": 0.3
+      },
+      "family_features": {
+        "family_friendly_score": 0.6,
+        "child_food_score": 0.52,
+        "has_child_chair": false,
+        "has_restroom": true,
+        "noise_level": 0.68
+      },
+      "queue_features": {
+        "queue_risk": 0.5,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 20,
+        "avg_wait_minutes_offpeak": 5
+      },
+      "addon_features": ["湿巾", "解腻饮品", "儿童不辣烤物"]
+    },
+    "poi_gaode_restaurant_020_615d15": {
+      "semantic_tags": ["bbq", "night_snack", "friends"],
+      "menu_features": {
+        "signature_dishes": ["烤串", "烤鸡翅", "烤蔬菜"],
+        "dish_ids": ["DISH_BBQ"],
+        "parent_categories": ["BBQ", "SNACK"],
+        "raw_food_terms": ["烧烤", "烤串", "烤吧"],
+        "ingredients": ["鸡翅", "牛肉", "蔬菜"],
+        "cooking_methods": ["烧烤", "炭烤"],
+        "flavors": ["孜然", "辣"],
+        "forms": ["烤物", "夜宵"],
+        "scenes": ["朋友聚餐", "夜市"],
+        "has_crayfish": false,
+        "has_bbq": true,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": false,
+        "spicy_level": 0.72,
+        "oiliness_level": 0.78,
+        "healthy_option_score": 0.25
+      },
+      "family_features": {
+        "family_friendly_score": 0.42,
+        "child_food_score": 0.35,
+        "has_child_chair": false,
+        "has_restroom": true,
+        "noise_level": 0.78
+      },
+      "queue_features": {
+        "queue_risk": 0.58,
+        "reservation_supported": false,
+        "avg_wait_minutes_peak": 25,
+        "avg_wait_minutes_offpeak": 8
+      },
+      "addon_features": ["湿巾", "解腻饮品"]
+    },
+    "poi_gaode_restaurant_135_8d370b": {
+      "semantic_tags": ["dessert", "snack", "long_tail_snack", "mall"],
+      "menu_features": {
+        "signature_dishes": ["奶皮子糖葫芦", "杨枝甘露", "芒果班戟"],
+        "dish_ids": ["DISH_DESSERT", "DISH_SNACK"],
+        "parent_categories": ["DESSERT", "SNACK", "LONG_TAIL_SNACK"],
+        "raw_food_terms": ["奶皮子糖葫芦", "糖葫芦", "甜品"],
+        "ingredients": ["奶皮子", "糖葫芦", "水果", "奶"],
+        "cooking_methods": ["裹糖", "冰镇"],
+        "flavors": ["奶香", "酸甜", "甜"],
+        "forms": ["糖葫芦", "甜品", "小吃"],
+        "scenes": ["网红小吃", "下午茶", "散步后"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.0,
+        "oiliness_level": 0.25,
+        "healthy_option_score": 0.35
+      },
+      "family_features": {
+        "family_friendly_score": 0.7,
+        "child_food_score": 0.72,
+        "has_child_chair": false,
+        "has_restroom": true,
+        "noise_level": 0.38
+      },
+      "queue_features": {
+        "queue_risk": 0.45,
+        "reservation_supported": false,
+        "avg_wait_minutes_peak": 12,
+        "avg_wait_minutes_offpeak": 3
+      },
+      "addon_features": ["纸巾", "饮品"]
+    },
+    "poi_gaode_restaurant_285_d2d52e": {
+      "semantic_tags": ["dessert", "cake", "basque", "date_friendly"],
+      "menu_features": {
+        "signature_dishes": ["抹茶开心果巴斯克", "原味巴斯克", "手作蛋糕"],
+        "dish_ids": ["DISH_DESSERT"],
+        "parent_categories": ["DESSERT"],
+        "raw_food_terms": ["抹茶开心果巴斯克", "巴斯克", "蛋糕"],
+        "ingredients": ["抹茶", "开心果", "芝士", "奶"],
+        "cooking_methods": ["烘焙"],
+        "flavors": ["奶香", "微苦", "甜"],
+        "forms": ["巴斯克", "蛋糕", "甜品"],
+        "scenes": ["下午茶", "纪念日", "约会"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.0,
+        "oiliness_level": 0.4,
+        "healthy_option_score": 0.28
+      },
+      "family_features": {
+        "family_friendly_score": 0.62,
+        "child_food_score": 0.6,
+        "has_child_chair": false,
+        "has_restroom": true,
+        "noise_level": 0.32
+      },
+      "queue_features": {
+        "queue_risk": 0.35,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 10,
+        "avg_wait_minutes_offpeak": 2
+      },
+      "addon_features": ["蛋糕蜡烛", "纪念日甜品"]
+    },
+    "poi_gaode_restaurant_052_7214b9": {
+      "semantic_tags": ["light_food", "family_dining", "low_oil"],
+      "menu_features": {
+        "signature_dishes": ["椰子鸡", "蔬菜拼盘", "清汤锅"],
+        "dish_ids": ["DISH_LIGHT_MEAL", "DISH_CHILD_FRIENDLY_FOOD"],
+        "parent_categories": ["LIGHT_MEAL", "CHILD_FRIENDLY"],
+        "raw_food_terms": ["清淡", "椰子鸡", "低油"],
+        "ingredients": ["鸡肉", "蔬菜", "椰子"],
+        "cooking_methods": ["煮", "蒸"],
+        "flavors": ["清淡", "鲜甜"],
+        "forms": ["正餐", "汤锅"],
+        "scenes": ["减脂", "亲子", "轻松晚餐"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.1,
+        "oiliness_level": 0.28,
+        "healthy_option_score": 0.82
+      },
+      "family_features": {
+        "family_friendly_score": 0.78,
+        "child_food_score": 0.76,
+        "has_child_chair": true,
+        "has_restroom": true,
+        "noise_level": 0.42
+      },
+      "queue_features": {
+        "queue_risk": 0.35,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 14,
+        "avg_wait_minutes_offpeak": 4
+      },
+      "addon_features": ["儿童碗筷", "低油菜"]
+    },
+    "poi_gaode_restaurant_209_9404fe": {
+      "semantic_tags": ["noodles", "casual_food", "nearby"],
+      "menu_features": {
+        "signature_dishes": ["藤椒牛肉拌面", "手擀牛肉面"],
+        "dish_ids": ["DISH_NOODLES"],
+        "parent_categories": ["NOODLES"],
+        "raw_food_terms": ["藤椒牛肉拌面", "牛肉拌面", "手擀面"],
+        "ingredients": ["牛肉", "面"],
+        "cooking_methods": ["拌", "煮"],
+        "flavors": ["藤椒", "麻", "微辣"],
+        "forms": ["面", "主食"],
+        "scenes": ["快捷晚餐", "附近"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": false,
+        "spicy_level": 0.58,
+        "oiliness_level": 0.48,
+        "healthy_option_score": 0.4
+      },
+      "family_features": {
+        "family_friendly_score": 0.45,
+        "child_food_score": 0.32,
+        "has_child_chair": false,
+        "has_restroom": false,
+        "noise_level": 0.45
+      },
+      "queue_features": {
+        "queue_risk": 0.25,
+        "reservation_supported": false,
+        "avg_wait_minutes_peak": 8,
+        "avg_wait_minutes_offpeak": 2
+      },
+      "addon_features": ["纸巾", "饮品"]
+    },
+    "poi_gaode_restaurant_003_b76733": {
+      "semantic_tags": ["coffee", "drink", "quiet_stay"],
+      "menu_features": {
+        "signature_dishes": ["拿铁", "冷萃咖啡", "轻食三明治"],
+        "dish_ids": ["DISH_COFFEE", "DISH_LIGHT_MEAL"],
+        "parent_categories": ["DRINK", "LIGHT_MEAL"],
+        "raw_food_terms": ["咖啡", "轻食", "饮品"],
+        "ingredients": ["咖啡", "奶", "蔬菜"],
+        "cooking_methods": ["冷萃", "烘焙"],
+        "flavors": ["奶香", "清爽"],
+        "forms": ["饮品", "轻食"],
+        "scenes": ["下午茶", "散心", "运动后"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.0,
+        "oiliness_level": 0.2,
+        "healthy_option_score": 0.68
+      },
+      "family_features": {
+        "family_friendly_score": 0.56,
+        "child_food_score": 0.58,
+        "has_child_chair": false,
+        "has_restroom": true,
+        "noise_level": 0.3
+      },
+      "queue_features": {
+        "queue_risk": 0.3,
+        "reservation_supported": false,
+        "avg_wait_minutes_peak": 8,
+        "avg_wait_minutes_offpeak": 2
+      },
+      "addon_features": ["冷饮", "轻食"]
+    },
+    "poi_gaode_restaurant_039_0ad9b6": {
+      "semantic_tags": ["milk_tea", "drink", "cool_drink"],
+      "menu_features": {
+        "signature_dishes": ["伯牙绝弦", "低糖奶茶", "冷萃茶"],
+        "dish_ids": ["DISH_MILK_TEA"],
+        "parent_categories": ["DRINK"],
+        "raw_food_terms": ["奶茶", "饮品", "低糖奶茶"],
+        "ingredients": ["茶", "奶"],
+        "cooking_methods": ["冷泡"],
+        "flavors": ["奶香", "清爽"],
+        "forms": ["饮品"],
+        "scenes": ["下午茶", "解辣", "运动后"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": false,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.0,
+        "oiliness_level": 0.15,
+        "healthy_option_score": 0.45
+      },
+      "family_features": {
+        "family_friendly_score": 0.52,
+        "child_food_score": 0.55,
+        "has_child_chair": false,
+        "has_restroom": false,
+        "noise_level": 0.42
+      },
+      "queue_features": {
+        "queue_risk": 0.42,
+        "reservation_supported": false,
+        "avg_wait_minutes_peak": 12,
+        "avg_wait_minutes_offpeak": 4
+      },
+      "addon_features": ["低糖选项", "冷饮"]
+    },
+    "poi_gaode_restaurant_131_d5c5d8": {
+      "semantic_tags": ["hangzhou_local", "local_food", "family_dining"],
+      "menu_features": {
+        "signature_dishes": ["杭帮菜", "龙井虾仁", "清炒时蔬"],
+        "dish_ids": ["DISH_HANGZHOU_LOCAL", "DISH_LIGHT_MEAL"],
+        "parent_categories": ["LOCAL_FOOD", "LIGHT_MEAL"],
+        "raw_food_terms": ["杭帮菜", "本地菜", "杭州美食"],
+        "ingredients": ["虾", "蔬菜", "米饭"],
+        "cooking_methods": ["炒", "蒸"],
+        "flavors": ["清淡", "鲜甜"],
+        "forms": ["正餐", "米饭"],
+        "scenes": ["外地亲友", "城市名片", "家庭聚餐"],
+        "has_crayfish": false,
+        "has_bbq": false,
+        "has_hotpot": false,
+        "has_local_food": true,
+        "has_non_spicy": true,
+        "has_child_friendly_food": true,
+        "spicy_level": 0.15,
+        "oiliness_level": 0.42,
+        "healthy_option_score": 0.6
+      },
+      "family_features": {
+        "family_friendly_score": 0.72,
+        "child_food_score": 0.68,
+        "has_child_chair": true,
+        "has_restroom": true,
+        "noise_level": 0.48
+      },
+      "queue_features": {
+        "queue_risk": 0.45,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 18,
+        "avg_wait_minutes_offpeak": 6
+      },
+      "addon_features": ["本地特色菜", "儿童不辣菜"]
+    },
+    "poi_gaode_activity_011_f9f2d9": {
+      "semantic_tags": ["child_friendly", "kid_safe", "amusement", "indoor", "rest_area"],
+      "child_features": {
+        "suitable_age_min": 3,
+        "suitable_age_max": 8,
+        "child_friendly_score": 0.92,
+        "has_restroom": true,
+        "has_rest_area": true,
+        "stroller_friendly": true
+      },
+      "queue_features": {
+        "queue_risk": 0.35,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 14,
+        "avg_wait_minutes_offpeak": 4
+      },
+      "physical_features": {
+        "walking_intensity": 0.35,
+        "weather_sensitive": false,
+        "indoor_ratio": 0.9
+      },
+      "experience_features": {
+        "family_friendly_score": 0.9,
+        "relaxation_score": 0.55,
+        "photo_score": 0.5,
+        "premium_score": 0.45,
+        "casual_score": 0.7
+      },
+      "addon_features": ["厕所", "休息区", "儿童袜"]
+    },
+    "poi_gaode_activity_014_0f7faa": {
+      "semantic_tags": ["child_friendly", "amusement", "indoor", "mall"],
+      "child_features": {
+        "suitable_age_min": 4,
+        "suitable_age_max": 12,
+        "child_friendly_score": 0.84,
+        "has_restroom": true,
+        "has_rest_area": true,
+        "stroller_friendly": true
+      },
+      "queue_features": {
+        "queue_risk": 0.5,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 22,
+        "avg_wait_minutes_offpeak": 8
+      },
+      "physical_features": {
+        "walking_intensity": 0.45,
+        "weather_sensitive": false,
+        "indoor_ratio": 0.85
+      },
+      "experience_features": {
+        "family_friendly_score": 0.82,
+        "relaxation_score": 0.48,
+        "photo_score": 0.55,
+        "premium_score": 0.45,
+        "casual_score": 0.75
+      },
+      "addon_features": ["厕所", "休息区", "提前预约"]
+    },
+    "poi_mock_walk_jinshahu_lakeside_loop": {
+      "semantic_tags": ["lake", "walk_spot", "healing", "photo_spot", "low_crowd"],
+      "child_features": {
+        "suitable_age_min": 4,
+        "suitable_age_max": 99,
+        "child_friendly_score": 0.72,
+        "has_restroom": true,
+        "has_rest_area": true,
+        "stroller_friendly": true
+      },
+      "queue_features": {
+        "queue_risk": 0.1,
+        "reservation_supported": false,
+        "avg_wait_minutes_peak": 0,
+        "avg_wait_minutes_offpeak": 0
+      },
+      "physical_features": {
+        "walking_intensity": 0.35,
+        "weather_sensitive": true,
+        "indoor_ratio": 0.1
+      },
+      "experience_features": {
+        "family_friendly_score": 0.72,
+        "relaxation_score": 0.9,
+        "photo_score": 0.85,
+        "premium_score": 0.45,
+        "casual_score": 0.9
+      },
+      "addon_features": ["饭后散步", "拍照点", "备选雨天商场"]
+    },
+    "poi_mock_walk_jinshahu_sunset_deck": {
+      "semantic_tags": ["lake", "walk_spot", "anniversary", "photo_spot", "healing"],
+      "child_features": {
+        "suitable_age_min": 5,
+        "suitable_age_max": 99,
+        "child_friendly_score": 0.68,
+        "has_restroom": true,
+        "has_rest_area": true,
+        "stroller_friendly": true
+      },
+      "queue_features": {
+        "queue_risk": 0.12,
+        "reservation_supported": false,
+        "avg_wait_minutes_peak": 0,
+        "avg_wait_minutes_offpeak": 0
+      },
+      "physical_features": {
+        "walking_intensity": 0.32,
+        "weather_sensitive": true,
+        "indoor_ratio": 0.05
+      },
+      "experience_features": {
+        "family_friendly_score": 0.68,
+        "relaxation_score": 0.88,
+        "photo_score": 0.92,
+        "premium_score": 0.55,
+        "casual_score": 0.88
+      },
+      "addon_features": ["拍照点", "花束", "饭后散步"]
+    },
+    "poi_mock_activity_jinshahu_aroma_craft": {
+      "semantic_tags": ["healing", "quiet_stay", "hands_on", "date_friendly", "indoor"],
+      "child_features": {
+        "suitable_age_min": 6,
+        "suitable_age_max": 99,
+        "child_friendly_score": 0.58,
+        "has_restroom": true,
+        "has_rest_area": true,
+        "stroller_friendly": false
+      },
+      "queue_features": {
+        "queue_risk": 0.22,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 8,
+        "avg_wait_minutes_offpeak": 2
+      },
+      "physical_features": {
+        "walking_intensity": 0.2,
+        "weather_sensitive": false,
+        "indoor_ratio": 1.0
+      },
+      "experience_features": {
+        "family_friendly_score": 0.58,
+        "relaxation_score": 0.86,
+        "photo_score": 0.68,
+        "premium_score": 0.62,
+        "casual_score": 0.7
+      },
+      "addon_features": ["预约", "安静体验", "纪念小物"]
+    },
+    "poi_mock_activity_jinshahu_photo_booth": {
+      "semantic_tags": ["anniversary", "photo_spot", "date_friendly", "indoor"],
+      "child_features": {
+        "suitable_age_min": 5,
+        "suitable_age_max": 99,
+        "child_friendly_score": 0.62,
+        "has_restroom": true,
+        "has_rest_area": true,
+        "stroller_friendly": true
+      },
+      "queue_features": {
+        "queue_risk": 0.28,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 10,
+        "avg_wait_minutes_offpeak": 3
+      },
+      "physical_features": {
+        "walking_intensity": 0.18,
+        "weather_sensitive": false,
+        "indoor_ratio": 1.0
+      },
+      "experience_features": {
+        "family_friendly_score": 0.62,
+        "relaxation_score": 0.62,
+        "photo_score": 0.95,
+        "premium_score": 0.7,
+        "casual_score": 0.62
+      },
+      "addon_features": ["花束", "拍照点", "纪念日小卡"]
+    },
+    "poi_gaode_activity_080_40717d": {
+      "semantic_tags": ["sports", "badminton", "friends", "rest_area"],
+      "child_features": {
+        "suitable_age_min": 7,
+        "suitable_age_max": 99,
+        "child_friendly_score": 0.55,
+        "has_restroom": true,
+        "has_rest_area": true,
+        "stroller_friendly": false
+      },
+      "queue_features": {
+        "queue_risk": 0.4,
+        "reservation_supported": true,
+        "avg_wait_minutes_peak": 16,
+        "avg_wait_minutes_offpeak": 4
+      },
+      "physical_features": {
+        "walking_intensity": 0.7,
+        "weather_sensitive": false,
+        "indoor_ratio": 1.0
+      },
+      "experience_features": {
+        "family_friendly_score": 0.55,
+        "relaxation_score": 0.45,
+        "photo_score": 0.35,
+        "premium_score": 0.55,
+        "casual_score": 0.72
+      },
+      "addon_features": ["提前订场", "补水饮品", "休息区"]
+    }
+  }
+}

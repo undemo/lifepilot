@@ -1,0 +1,46 @@
+{
+  "version": "phase0_llm_native_golden_cases.v1",
+  "description": "Phase 0 create_plan golden inputs for LLM-native incremental upgrade regression.",
+  "cases": [
+    {
+      "case_id": "family_child_crayfish",
+      "input_text": "今天下午想和老婆孩子出去玩几个小时，孩子5岁，别太远，不排长队，晚饭想吃小龙虾"
+    },
+    {
+      "case_id": "anniversary_weight_loss_crayfish",
+      "input_text": "这周末我和我老婆小孩去过纪念日，老婆在减脂，想带老婆去游乐园，晚上吃小龙虾"
+    },
+    {
+      "case_id": "stress_relief_afternoon",
+      "input_text": "我最近学习压力很大，今天下午想出去散散心"
+    },
+    {
+      "case_id": "tourist_scenic_food",
+      "input_text": "我这周末姐姐从山东来杭州找玩，带她体验一下杭州的美景和美食"
+    },
+    {
+      "case_id": "sports_friends_badminton",
+      "input_text": "这周末和朋友去打个羽毛球，然后你安排"
+    },
+    {
+      "case_id": "long_tail_charcoal_pineapple",
+      "input_text": "晚上想吃碳烤菠萝，附近顺便逛逛"
+    },
+    {
+      "case_id": "long_tail_milk_skin_tanghulu",
+      "input_text": "想吃奶皮子糖葫芦，再找个地方散步"
+    },
+    {
+      "case_id": "long_tail_rattan_pepper_beef_noodles",
+      "input_text": "晚上想吃藤椒牛肉拌面，不想走太远"
+    },
+    {
+      "case_id": "hotpot_child_non_spicy",
+      "input_text": "想吃火锅，但孩子不能吃辣，别排队"
+    },
+    {
+      "case_id": "weight_loss_light_walk",
+      "input_text": "老婆最近减脂，想吃点清淡的，再安排个轻松的地方走走"
+    }
+  ]
+}
