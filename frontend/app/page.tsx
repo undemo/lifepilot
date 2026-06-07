@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Baby, BrainCircuit, CalendarClock, CloudSun, GitBranch, Heart, MapPin, Mic, Navigation, ShieldCheck, TrafficCone, Users, Wine, X } from "lucide-react";
 import { AppShell } from "@/components/common/AppShell";
@@ -9,6 +9,9 @@ import { api, type PlanCreateBody } from "@/lib/api";
 import { buildClarificationQuestions, type ClarificationQuestion } from "@/lib/clarifications";
 import { getDefaultCurrentTimeValue } from "@/lib/demo-time";
 import type { StandardError } from "@/types/schema";
+
+const CURRENT_TIME_STORAGE_KEY = "lifepilot_current_time_anchor";
+const DATETIME_LOCAL_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
 const scenarios = [
   {
@@ -59,6 +62,17 @@ export default function HomePage() {
   const invalid = input.trim().length < 5;
   const clarificationQuestions = buildClarificationQuestions(input, scenarioHint);
 
+  useEffect(() => {
+    const storedCurrentTime = readStoredCurrentTime();
+    if (storedCurrentTime) {
+      setCurrentTime(storedCurrentTime);
+      return;
+    }
+    const initialCurrentTime = getDefaultCurrentTimeValue();
+    setCurrentTime(initialCurrentTime);
+    persistCurrentTime(initialCurrentTime);
+  }, []);
+
   async function submit() {
     if (invalid || submitting) return;
     const body = buildPlanCreateBody(input.trim());
@@ -83,6 +97,11 @@ export default function HomePage() {
       current_time: toShanghaiIso(currentTime),
       preferred_duration_hours: Number(durationHours) || 4
     };
+  }
+
+  function updateCurrentTime(value: string) {
+    setCurrentTime(value);
+    persistCurrentTime(value);
   }
 
   function startClarification(body: PlanCreateBody, questions: ClarificationQuestion[]) {
@@ -294,7 +313,7 @@ export default function HomePage() {
                     <CalendarClock size={14} />
                     当前时间锚点
                   </span>
-                  <input className="input" type="datetime-local" value={currentTime} onChange={(event) => setCurrentTime(event.target.value)} />
+                  <input className="input" type="datetime-local" value={currentTime} onChange={(event) => updateCurrentTime(event.target.value)} />
                 </label>
                 <label className="field">
                   可规划时长
@@ -316,6 +335,29 @@ export default function HomePage() {
       </div>
     </AppShell>
   );
+}
+
+function readStoredCurrentTime() {
+  if (typeof window === "undefined") return "";
+  try {
+    const value = window.localStorage.getItem(CURRENT_TIME_STORAGE_KEY) || "";
+    return DATETIME_LOCAL_PATTERN.test(value) ? value : "";
+  } catch {
+    return "";
+  }
+}
+
+function persistCurrentTime(value: string) {
+  if (typeof window === "undefined") return;
+  try {
+    if (DATETIME_LOCAL_PATTERN.test(value)) {
+      window.localStorage.setItem(CURRENT_TIME_STORAGE_KEY, value);
+    } else {
+      window.localStorage.removeItem(CURRENT_TIME_STORAGE_KEY);
+    }
+  } catch {
+    // Storage can be unavailable in private or restricted browser modes.
+  }
 }
 
 function Advantage({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {

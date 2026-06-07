@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,13 +20,14 @@ const HOP_BY_HOP_HEADERS = new Set([
 ]);
 
 type RouteContext = {
-  params: {
+  params: Promise<{
     path?: string[];
-  };
+  }>;
 };
 
-async function proxyApiRequest(request: Request, context: RouteContext) {
-  const targetUrl = buildTargetUrl(request.url, context.params.path || []);
+async function proxyApiRequest(request: NextRequest, context: RouteContext) {
+  const params = await context.params;
+  const targetUrl = buildTargetUrl(request.url, params.path || []);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), PROXY_TIMEOUT_MS);
 
