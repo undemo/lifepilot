@@ -1635,6 +1635,10 @@ button.round-tool:active {
   }
 }
 
+nextjs-portal {
+  display: none !important;
+}
+
 @media (min-width: 920px) {
   .shell {
     padding: 24px;
