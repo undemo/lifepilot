@@ -196,14 +196,16 @@ bash start.sh
 
 默认启动：
 
-- 后端：`http://127.0.0.1:8010`
-- 前端：`http://127.0.0.1:3000`
+- 后端监听：`0.0.0.0:8010`
+- 前端监听：`0.0.0.0:3000`
+- 服务器部署后访问：`http://<server-ip>:3000`
 - 默认关闭外部模型：`DEEPSEEK_ENABLED=false`、`QWEN_ENABLED=false`
 
-如果端口被占用，可以指定端口：
+如果端口被占用，可以指定端口；如需只在本机开放，也可以显式指定 host：
 
 ```bash
 BACKEND_PORT=8011 FRONTEND_PORT=3001 bash start.sh
+BACKEND_HOST=127.0.0.1 FRONTEND_HOST=127.0.0.1 bash start.sh
 ```
 
 ## 验证方式

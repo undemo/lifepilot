@@ -16,7 +16,7 @@ This `lifepilot/` directory is the clean online submission package for the LifeP
 bash start.sh
 ```
 
-The script starts the backend on `127.0.0.1:8010` and the frontend on `127.0.0.1:3000`.
+The script binds the backend to `0.0.0.0:8010` and the frontend to `0.0.0.0:3000` by default, so a server deployment can be opened at `http://<server-ip>:3000`. Set `BACKEND_HOST=127.0.0.1 FRONTEND_HOST=127.0.0.1` if you need local-only access.
 
 ## Verify
 
