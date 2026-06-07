@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Baby, BrainCircuit, CalendarClock, CloudSun, GitBranch, Heart, MapPin, Mic, Navigation, ShieldCheck, TrafficCone, Users, Wine, X } from "lucide-react";
+import { ArrowRight, Baby, BrainCircuit, CalendarClock, CloudSun, GitBranch, Heart, MapPin, Navigation, ShieldCheck, TrafficCone, Users, Wine, X } from "lucide-react";
 import { AppShell } from "@/components/common/AppShell";
 import { ErrorState, SimulationBadge } from "@/components/common/States";
 import { api, type PlanCreateBody } from "@/lib/api";
@@ -12,6 +12,7 @@ import type { StandardError } from "@/types/schema";
 
 const CURRENT_TIME_STORAGE_KEY = "lifepilot_current_time_anchor";
 const DATETIME_LOCAL_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+const HERO_INPUT_MAX_HEIGHT = 178;
 
 const scenarios = [
   {
@@ -50,6 +51,7 @@ const scenarios = [
 
 export default function HomePage() {
   const router = useRouter();
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState(scenarios[0].text);
   const [scenarioHint, setScenarioHint] = useState<string | undefined>(scenarios[0].key);
   const [area, setArea] = useState("金沙湖");
@@ -72,6 +74,15 @@ export default function HomePage() {
     setCurrentTime(initialCurrentTime);
     persistCurrentTime(initialCurrentTime);
   }, []);
+
+  useEffect(() => {
+    const textarea = inputRef.current;
+    if (!textarea) return;
+    textarea.style.height = "auto";
+    const nextHeight = Math.min(textarea.scrollHeight, HERO_INPUT_MAX_HEIGHT);
+    textarea.style.height = `${nextHeight}px`;
+    textarea.style.overflowY = textarea.scrollHeight > HERO_INPUT_MAX_HEIGHT ? "auto" : "hidden";
+  }, [input]);
 
   async function submit() {
     if (invalid || submitting) return;
@@ -156,6 +167,7 @@ export default function HomePage() {
             <div className="hero-input-row">
               <textarea
                 className="hero-input"
+                ref={inputRef}
                 value={input}
                 aria-label="输入生活目标"
                 onChange={(event) => {
@@ -164,9 +176,6 @@ export default function HomePage() {
                 }}
               />
               <div className="hero-tools">
-                <span aria-hidden="true" className="round-tool">
-                  <Mic size={18} />
-                </span>
                 <button
                   aria-label="设置初始状态"
                   className="round-tool state-trigger"
